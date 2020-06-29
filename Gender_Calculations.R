@@ -184,17 +184,15 @@ plot(aov, 2)
 #print the model tables from the anova
 print(model.tables(aov,"means"),digits=3) 
 
-#6. Aside from Facebook, what other social media sites do you use? Please check all that apply.
+#6 Aside from Facebook, what other social media sites do you use? Please check all that apply.----
 #Instagram
-#replacing NAs with the alternative value----
+#replacing NAs with the alternative value
 ig <- as.data.frame(data$SM_USE_IG, stringsAsFactors = FALSE) #force to character type
 names(ig)[1] <- "use" #rename column
 ig <- ig$use %>%
   replace_na("Not Used")
-
 tbl <- table(data$GENDER, ig)
 tbl
-
 c_test <- chisq.test(tbl)
 c_test
 
@@ -203,10 +201,330 @@ pi <- as.data.frame(data$SM_USE_PI, stringsAsFactors = FALSE) #force to characte
 names(pi)[1] <- "use" #rename column
 pi <- pi$use %>%
   replace_na("Not Used")
-
 tbl <- table(data$GENDER, pi)
 tbl
-
 c_test <- chisq.test(tbl)
 c_test
+
+#LinkedIn
+lk <- as.data.frame(data$SM_USE_LK, stringsAsFactors = FALSE) #force to character type
+names(lk)[1] <- "use" #rename column
+lk <- lk$use %>%
+  replace_na("Not Used")
+tbl <- table(data$GENDER, lk)
+tbl
+c_test <- chisq.test(tbl)
+c_test
+
+#Twitter
+tw <- as.data.frame(data$SM_USE_TW, stringsAsFactors = FALSE) #force to character type
+names(tw)[1] <- "use" #rename column
+tw <- tw$use %>%
+  replace_na("Not Used")
+tbl <- table(data$GENDER, tw)
+tbl
+c_test <- chisq.test(tbl)
+c_test
+
+#YouTube
+yt <- as.data.frame(data$SM_USE_YT, stringsAsFactors = FALSE) #force to character type
+names(yt)[1] <- "use" #rename column
+yt <- yt$use %>%
+  replace_na("Not Used")
+tbl <- table(data$GENDER, yt)
+tbl
+c_test <- chisq.test(tbl)
+c_test
+
+#Reddit
+re <- as.data.frame(data$SM_USE_RE, stringsAsFactors = FALSE) #force to character type
+names(re)[1] <- "use" #rename column
+re <- re$use %>%
+  replace_na("Not Used")
+tbl <- table(data$GENDER, re)
+tbl
+f_test <- exact2x2(tbl, tsmethod = "central")
+f_test
+
+#Tumblr
+tu <- as.data.frame(data$SM_USE_TU, stringsAsFactors = FALSE) #force to character type
+names(tu)[1] <- "use" #rename column
+tu <- tu$use %>%
+  replace_na("Not Used")
+tbl <- table(data$GENDER, tu)
+tbl
+f_test <- exact2x2(tbl, tsmethod = "central")
+f_test
+
+#Flickr
+fl <- as.data.frame(data$SM_USE_FL, stringsAsFactors = FALSE) #force to character type
+names(fl)[1] <- "use" #rename column
+fl <- fl$use %>%
+  replace_na("Not Used")
+tbl <- table(data$GENDER, fl)
+tbl
+f_test <- exact2x2(tbl, tsmethod = "central")
+f_test
+
+#Google+
+go <- as.data.frame(data$SM_USE_GO, stringsAsFactors = FALSE) #force to character type
+names(go)[1] <- "use" #rename column
+go <- go$use %>%
+  replace_na("Not Used")
+tbl <- table(data$GENDER, go)
+tbl
+c_test <- chisq.test(tbl)
+c_test
+
+#Snapchat
+sc <- as.data.frame(data$SM_USE_SC, stringsAsFactors = FALSE) #force to character type
+names(sc)[1] <- "use" #rename column
+sc <- sc$use %>%
+  replace_na("Not Used")
+tbl <- table(data$GENDER, sc)
+tbl
+c_test <- chisq.test(tbl)
+c_test
+
+#WhatsApp
+wa <- as.data.frame(data$SM_USE_WA, stringsAsFactors = FALSE) #force to character type
+names(wa)[1] <- "use" #rename column
+wa <- wa$use %>%
+  replace_na("Not Used")
+tbl <- table(data$GENDER, wa)
+tbl
+f_test <- exact2x2(tbl, tsmethod = "central")
+f_test
+
+#WeChat
+wc <- as.data.frame(data$SM_USE_WC, stringsAsFactors = FALSE) #force to character type
+names(wc)[1] <- "use" #rename column
+wc <- wc$use %>%
+  replace_na("Not Used")
+tbl <- table(data$GENDER, wc)
+tbl
+f_test <- exact2x2(tbl, tsmethod = "central")
+f_test
+
+#LINE
+# No one chose this response
+
+#Viber
+vb <- as.data.frame(data$SM_USE_VB, stringsAsFactors = FALSE) #force to character type
+names(vb)[1] <- "use" #rename column
+vb <- vb$use %>%
+  replace_na("Not Used")
+tbl <- table(data$GENDER, vb)
+tbl
+f_test <- exact2x2(tbl, tsmethod = "central")
+f_test
+
+#7 Which devices do you use to check social media? Please check all that apply.----
+#PC
+pc <- as.data.frame(data$DEVICE_PC, stringsAsFactors = FALSE) #force to character type
+names(pc)[1] <- "use" #rename column
+pc <- pc$use %>%
+  replace_na("Not Used")
+tbl <- table(data$GENDER, pc)
+tbl
+f_test <- exact2x2(tbl, tsmethod = "central")
+f_test
+
+#Phone
+ph <- as.data.frame(data$DEVICE_PHONE, stringsAsFactors = FALSE) #force to character type
+names(ph)[1] <- "use" #rename column
+ph <- ph$use %>%
+  replace_na("Not Used")
+tbl <- table(data$GENDER, ph)
+tbl
+f_test <- exact2x2(tbl, tsmethod = "central")
+f_test
+
+#Tablet
+ta <- as.data.frame(data$DEVICE_TABLET, stringsAsFactors = FALSE) #force to character type
+names(ta)[1] <- "use" #rename column
+ta <- ta$use %>%
+  replace_na("Not Used")
+tbl <- table(data$GENDER, ta)
+tbl
+c_test <- chisq.test(tbl)
+c_test
+
+#Other had one "other" response and it was 'None', so analysis not performed
+
+#8 Where do you access social media?----
+#Home
+hm <- as.data.frame(data$ACCESS_HOME, stringsAsFactors = FALSE) #force to character type
+names(hm)[1] <- "use" #rename column
+hm <- hm$use %>%
+  replace_na("Not Used")
+tbl <- table(data$GENDER, hm)
+tbl
+f_test <- exact2x2(tbl, tsmethod = "central")
+f_test
+
+#Work
+wk <- as.data.frame(data$ACCESS_WORK, stringsAsFactors = FALSE) #force to character type
+names(wk)[1] <- "use" #rename column
+wk <- wk$use %>%
+  replace_na("Not Used")
+tbl <- table(data$GENDER, wk)
+tbl
+c_test <- chisq.test(tbl)
+c_test
+
+#School
+sl <- as.data.frame(data$ACCESS_SCHOOL, stringsAsFactors = FALSE) #force to character type
+names(sl)[1] <- "use" #rename column
+sl <- sl$use %>%
+  replace_na("Not Used")
+tbl <- table(data$GENDER, sl)
+tbl
+f_test <- exact2x2(tbl, tsmethod = "central")
+f_test
+
+#Other public location
+ot <- as.data.frame(data$ACCESS_OTHER, stringsAsFactors = FALSE) #force to character type
+names(ot)[1] <- "use" #rename column
+ot <- ot$use %>%
+  replace_na("Not Used")
+tbl <- table(data$GENDER, ot)
+tbl
+c_test <- chisq.test(tbl)
+c_test
+
+#9 Aside from Facebook, what other social media do you use to seek agriculture information? Please check all that apply.----
+#Instagram
+#replacing NAs with the alternative value
+ig <- as.data.frame(data$AG_USE_IG, stringsAsFactors = FALSE) #force to character type
+names(ig)[1] <- "use" #rename column
+ig <- ig$use %>%
+  replace_na("Not Used")
+tbl <- table(data$GENDER, ig)
+tbl
+c_test <- chisq.test(tbl)
+c_test
+
+#Pinterest
+pi <- as.data.frame(data$AG_USE_PI, stringsAsFactors = FALSE) #force to character type
+names(pi)[1] <- "use" #rename column
+pi <- pi$use %>%
+  replace_na("Not Used")
+tbl <- table(data$GENDER, pi)
+tbl
+f_test <- exact2x2(tbl, tsmethod = "central")
+f_test
+
+#LinkedIn
+lk <- as.data.frame(data$AG_USE_LK, stringsAsFactors = FALSE) #force to character type
+names(lk)[1] <- "use" #rename column
+lk <- lk$use %>%
+  replace_na("Not Used")
+tbl <- table(data$GENDER, lk)
+tbl
+c_test <- chisq.test(tbl)
+c_test
+
+#Twitter
+tw <- as.data.frame(data$AG_USE_TW, stringsAsFactors = FALSE) #force to character type
+names(tw)[1] <- "use" #rename column
+tw <- tw$use %>%
+  replace_na("Not Used")
+tbl <- table(data$GENDER, tw)
+tbl
+c_test <- chisq.test(tbl)
+c_test
+
+#YouTube
+yt <- as.data.frame(data$SM_USE_YT, stringsAsFactors = FALSE) #force to character type
+names(yt)[1] <- "use" #rename column
+yt <- yt$use %>%
+  replace_na("Not Used")
+tbl <- table(data$GENDER, yt)
+tbl
+c_test <- chisq.test(tbl)
+c_test
+
+#Reddit
+re <- as.data.frame(data$SM_USE_RE, stringsAsFactors = FALSE) #force to character type
+names(re)[1] <- "use" #rename column
+re <- re$use %>%
+  replace_na("Not Used")
+tbl <- table(data$GENDER, re)
+tbl
+f_test <- exact2x2(tbl, tsmethod = "central")
+f_test
+
+#Tumblr
+tu <- as.data.frame(data$SM_USE_TU, stringsAsFactors = FALSE) #force to character type
+names(tu)[1] <- "use" #rename column
+tu <- tu$use %>%
+  replace_na("Not Used")
+tbl <- table(data$GENDER, tu)
+tbl
+f_test <- exact2x2(tbl, tsmethod = "central")
+f_test
+
+#Flickr
+fl <- as.data.frame(data$SM_USE_FL, stringsAsFactors = FALSE) #force to character type
+names(fl)[1] <- "use" #rename column
+fl <- fl$use %>%
+  replace_na("Not Used")
+tbl <- table(data$GENDER, fl)
+tbl
+f_test <- exact2x2(tbl, tsmethod = "central")
+f_test
+
+#Google+
+go <- as.data.frame(data$SM_USE_GO, stringsAsFactors = FALSE) #force to character type
+names(go)[1] <- "use" #rename column
+go <- go$use %>%
+  replace_na("Not Used")
+tbl <- table(data$GENDER, go)
+tbl
+c_test <- chisq.test(tbl)
+c_test
+
+#Snapchat
+sc <- as.data.frame(data$SM_USE_SC, stringsAsFactors = FALSE) #force to character type
+names(sc)[1] <- "use" #rename column
+sc <- sc$use %>%
+  replace_na("Not Used")
+tbl <- table(data$GENDER, sc)
+tbl
+c_test <- chisq.test(tbl)
+c_test
+
+#WhatsApp
+wa <- as.data.frame(data$SM_USE_WA, stringsAsFactors = FALSE) #force to character type
+names(wa)[1] <- "use" #rename column
+wa <- wa$use %>%
+  replace_na("Not Used")
+tbl <- table(data$GENDER, wa)
+tbl
+f_test <- exact2x2(tbl, tsmethod = "central")
+f_test
+
+#WeChat
+wc <- as.data.frame(data$SM_USE_WC, stringsAsFactors = FALSE) #force to character type
+names(wc)[1] <- "use" #rename column
+wc <- wc$use %>%
+  replace_na("Not Used")
+tbl <- table(data$GENDER, wc)
+tbl
+f_test <- exact2x2(tbl, tsmethod = "central")
+f_test
+
+#LINE
+# No one chose this response
+
+#Viber
+vb <- as.data.frame(data$SM_USE_VB, stringsAsFactors = FALSE) #force to character type
+names(vb)[1] <- "use" #rename column
+vb <- vb$use %>%
+  replace_na("Not Used")
+tbl <- table(data$GENDER, vb)
+tbl
+f_test <- exact2x2(tbl, tsmethod = "central")
+f_test
 

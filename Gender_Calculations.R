@@ -436,7 +436,7 @@ c_test <- chisq.test(tbl)
 c_test
 
 #YouTube
-yt <- as.data.frame(data$SM_USE_YT, stringsAsFactors = FALSE) #force to character type
+yt <- as.data.frame(data$AG_USE_YT, stringsAsFactors = FALSE) #force to character type
 names(yt)[1] <- "use" #rename column
 yt <- yt$use %>%
   replace_na("Not Used")
@@ -446,7 +446,7 @@ c_test <- chisq.test(tbl)
 c_test
 
 #Reddit
-re <- as.data.frame(data$SM_USE_RE, stringsAsFactors = FALSE) #force to character type
+re <- as.data.frame(data$AG_USE_RE, stringsAsFactors = FALSE) #force to character type
 names(re)[1] <- "use" #rename column
 re <- re$use %>%
   replace_na("Not Used")
@@ -456,7 +456,7 @@ f_test <- exact2x2(tbl, tsmethod = "central")
 f_test
 
 #Tumblr
-tu <- as.data.frame(data$SM_USE_TU, stringsAsFactors = FALSE) #force to character type
+tu <- as.data.frame(data$AG_USE_TU, stringsAsFactors = FALSE) #force to character type
 names(tu)[1] <- "use" #rename column
 tu <- tu$use %>%
   replace_na("Not Used")
@@ -466,7 +466,7 @@ f_test <- exact2x2(tbl, tsmethod = "central")
 f_test
 
 #Flickr
-fl <- as.data.frame(data$SM_USE_FL, stringsAsFactors = FALSE) #force to character type
+fl <- as.data.frame(data$AG_USE_FL, stringsAsFactors = FALSE) #force to character type
 names(fl)[1] <- "use" #rename column
 fl <- fl$use %>%
   replace_na("Not Used")
@@ -476,7 +476,7 @@ f_test <- exact2x2(tbl, tsmethod = "central")
 f_test
 
 #Google+
-go <- as.data.frame(data$SM_USE_GO, stringsAsFactors = FALSE) #force to character type
+go <- as.data.frame(data$AG_USE_GO, stringsAsFactors = FALSE) #force to character type
 names(go)[1] <- "use" #rename column
 go <- go$use %>%
   replace_na("Not Used")
@@ -486,17 +486,17 @@ c_test <- chisq.test(tbl)
 c_test
 
 #Snapchat
-sc <- as.data.frame(data$SM_USE_SC, stringsAsFactors = FALSE) #force to character type
+sc <- as.data.frame(data$AG_USE_SC, stringsAsFactors = FALSE) #force to character type
 names(sc)[1] <- "use" #rename column
 sc <- sc$use %>%
   replace_na("Not Used")
 tbl <- table(data$GENDER, sc)
 tbl
-c_test <- chisq.test(tbl)
-c_test
+f_test <- exact2x2(tbl, tsmethod = "central")
+f_test
 
 #WhatsApp
-wa <- as.data.frame(data$SM_USE_WA, stringsAsFactors = FALSE) #force to character type
+wa <- as.data.frame(data$AG_USE_WA, stringsAsFactors = FALSE) #force to character type
 names(wa)[1] <- "use" #rename column
 wa <- wa$use %>%
   replace_na("Not Used")
@@ -506,25 +506,100 @@ f_test <- exact2x2(tbl, tsmethod = "central")
 f_test
 
 #WeChat
-wc <- as.data.frame(data$SM_USE_WC, stringsAsFactors = FALSE) #force to character type
-names(wc)[1] <- "use" #rename column
-wc <- wc$use %>%
-  replace_na("Not Used")
-tbl <- table(data$GENDER, wc)
-tbl
-f_test <- exact2x2(tbl, tsmethod = "central")
-f_test
+# No one chose this response
 
 #LINE
 # No one chose this response
 
 #Viber
-vb <- as.data.frame(data$SM_USE_VB, stringsAsFactors = FALSE) #force to character type
-names(vb)[1] <- "use" #rename column
-vb <- vb$use %>%
+# No one chose this response
+
+
+#10 Do you post questions about agriculture on Facebook?----
+tbl <- table(data$GENDER, data$AG_QS_FB)
+tbl
+
+chi_test <- chisq.test(tbl)
+chi_test
+
+#11 If yes, where do you post questions about agriculture on Facebook?----
+ag_yes <- data[which(data$AG_QS_FB=="Yes, I post questions about agriculture on Facebook."),]
+ag_yes #only want those who answered yes to Q10
+
+#In my status updates
+ag_yes$AG_QS_STATUS <- ag_yes$AG_QS_STATUS %>%
   replace_na("Not Used")
-tbl <- table(data$GENDER, vb)
+tbl <- table(ag_yes$GENDER, ag_yes$AG_QS_STATUS)
+tbl
+chi_test <- chisq.test(tbl)
+chi_test
+
+#In a group
+ag_yes$AG_QS_GROUP <- ag_yes$AG_QS_GROUP %>%
+  replace_na("Not Used")
+tbl <- table(ag_yes$GENDER, ag_yes$AG_QS_GROUP)
+tbl
+chi_test <- chisq.test(tbl)
+chi_test
+
+#On a page
+ag_yes$AG_QS_PAGE <- ag_yes$AG_QS_PAGE %>%
+  replace_na("Not Used")
+tbl <- table(ag_yes$GENDER, ag_yes$AG_QS_PAGE)
+tbl
+chi_test <- chisq.test(tbl)
+chi_test
+
+#Other
+ag_yes$AG_QS_OTHER <- ag_yes$AG_QS_OTHER %>%
+  replace_na("Not Used")
+tbl <- table(ag_yes$GENDER, ag_yes$AG_QS_OTHER)
 tbl
 f_test <- exact2x2(tbl, tsmethod = "central")
 f_test
 
+#12 The following are types of content you find on Facebook. How helpful are each of them in providing you with agriculture information?----
+
+data2 <- as.data.frame(data, stringsAsFactors=FALSE) #made a copy of the data to test
+data2[ ,63:74][ data2[ ,63:74] == "Not at all helpful" ] <- 1 #convert multiple columns to scores
+data2[ ,63:74][ data2[ ,63:74] == "Slightly helpful" ] <- 2
+data2[ ,63:74][ data2[ ,63:74] == "Moderately helpful" ] <- 3
+data2[ ,63:74][ data2[ ,63:74] == "Very helpful" ] <- 4
+data2[ ,63:74][ data2[ ,63:74] == "Extremely helpful" ] <- 5
+data2[,63:74] <- sapply(data2[ ,63:74],as.numeric) #convert multiple columns to numeric type
+
+#Advertisements
+df <- cbind.data.frame(data2$GENDER, data2$HELP_AD)
+names(df) <- c("gender","ads_score")
+df <- na.omit(df)
+#Table
+tbl <- table(df$gender, df$ads_score)
+tbl
+#ANOVA
+aov <- aov(ads_score ~ gender, data = df)
+summary(aov)
+#multiple pairwise-comparison
+tukey <- TukeyHSD(aov) #with 95% conf.level
+tukey
+#check for normality
+plot(aov, 2)
+#print the model tables from the anova
+print(model.tables(aov,"means"),digits=3) 
+
+#Apps
+df <- cbind.data.frame(data2$GENDER, data2$HELP_AP)
+names(df) <- c("gender","apps_score")
+df <- na.omit(df)
+#Table
+tbl <- table(df$gender, df$apps_score)
+tbl
+#ANOVA
+aov <- aov(apps_score ~ gender, data = df)
+summary(aov)
+#multiple pairwise-comparison
+tukey <- TukeyHSD(aov) #with 95% conf.level
+tukey
+#check for normality
+plot(aov, 2)
+#print the model tables from the anova
+print(model.tables(aov,"means"),digits=3) 

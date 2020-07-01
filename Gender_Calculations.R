@@ -2,6 +2,7 @@
 library(readr)
 library(exact2x2)
 library(tidyr)
+library(MASS) #grabbing residuals
 
 #Load data----
 data <- read_csv("Survey Data 2-23-19_Demographics_Edited.csv")
@@ -568,10 +569,15 @@ data2[ ,63:74][ data2[ ,63:74] == "Very helpful" ] <- 4
 data2[ ,63:74][ data2[ ,63:74] == "Extremely helpful" ] <- 5
 data2[,63:74] <- sapply(data2[ ,63:74],as.numeric) #convert multiple columns to numeric type
 
+myData <- myData[-c(2, 4, 6), ] #drop a row
+#Grab stadardized residuals to analyze
+stdres(aov)
+
 #Advertisements
 df <- cbind.data.frame(data2$GENDER, data2$HELP_AD)
 names(df) <- c("gender","ads_score")
 df <- na.omit(df)
+df <- df[-c(71), ] #drop a row
 #Table
 tbl <- table(df$gender, df$ads_score)
 tbl
@@ -602,4 +608,184 @@ tukey
 #check for normality
 plot(aov, 2)
 #print the model tables from the anova
-print(model.tables(aov,"means"),digits=3) 
+print(model.tables(aov,"means"),digits=3)
+
+#Articles
+df <- cbind.data.frame(data2$GENDER, data2$HELP_AR)
+names(df) <- c("gender","articles_score")
+df <- na.omit(df)
+#Table
+tbl <- table(df$gender, df$articles_score)
+tbl
+#ANOVA
+aov <- aov(articles_score ~ gender, data = df)
+summary(aov)
+#multiple pairwise-comparison
+tukey <- TukeyHSD(aov) #with 95% conf.level
+tukey
+#check for normality
+plot(aov, 2)
+#print the model tables from the anova
+print(model.tables(aov,"means"),digits=3)
+
+#Events
+df <- cbind.data.frame(data2$GENDER, data2$HELP_EV)
+names(df) <- c("gender","events_score")
+df <- na.omit(df)
+#Table
+tbl <- table(df$gender, df$events_score)
+tbl
+#ANOVA
+aov <- aov(events_score ~ gender, data = df)
+summary(aov)
+#multiple pairwise-comparison
+tukey <- TukeyHSD(aov) #with 95% conf.level
+tukey
+#check for normality
+plot(aov, 2)
+#print the model tables from the anova
+print(model.tables(aov,"means"),digits=3)
+
+#Groups
+df <- cbind.data.frame(data2$GENDER, data2$HELP_GR)
+names(df) <- c("gender","groups_score")
+df <- na.omit(df)
+#Table
+tbl <- table(df$gender, df$groups_score)
+tbl
+#ANOVA
+aov <- aov(groups_score ~ gender, data = df)
+summary(aov)
+#multiple pairwise-comparison
+tukey <- TukeyHSD(aov) #with 95% conf.level
+tukey
+#check for normality
+plot(aov, 2)
+#print the model tables from the anova
+print(model.tables(aov,"means"),digits=3)
+
+#Links
+df <- cbind.data.frame(data2$GENDER, data2$HELP_LI)
+names(df) <- c("gender","links_score")
+df <- na.omit(df)
+#Table
+tbl <- table(df$gender, df$links_score)
+tbl
+#ANOVA
+aov <- aov(links_score ~ gender, data = df)
+summary(aov)
+#multiple pairwise-comparison
+tukey <- TukeyHSD(aov) #with 95% conf.level
+tukey
+#check for normality
+plot(aov, 2)
+#print the model tables from the anova
+print(model.tables(aov,"means"),digits=3)
+
+#Pages
+df <- cbind.data.frame(data2$GENDER, data2$HELP_PA)
+names(df) <- c("gender","pages_score")
+df <- na.omit(df)
+#Table
+tbl <- table(df$gender, df$pages_score)
+tbl
+#ANOVA
+aov <- aov(pages_score ~ gender, data = df)
+summary(aov)
+#multiple pairwise-comparison
+tukey <- TukeyHSD(aov) #with 95% conf.level
+tukey
+#check for normality
+plot(aov, 2)
+#print the model tables from the anova
+print(model.tables(aov,"means"),digits=3)
+
+#Photos
+df <- cbind.data.frame(data2$GENDER, data2$HELP_PH)
+names(df) <- c("gender","photos_score")
+df <- na.omit(df)
+#Table
+tbl <- table(df$gender, df$photos_score)
+tbl
+#ANOVA
+aov <- aov(photos_score ~ gender, data = df)
+summary(aov)
+#multiple pairwise-comparison
+tukey <- TukeyHSD(aov) #with 95% conf.level
+tukey
+#check for normality
+plot(aov, 2)
+#print the model tables from the anova
+print(model.tables(aov,"means"),digits=3)
+
+#Places
+df <- cbind.data.frame(data2$GENDER, data2$HELP_PL)
+names(df) <- c("gender","places_score")
+df <- na.omit(df)
+#Table
+tbl <- table(df$gender, df$places_score)
+tbl
+#ANOVA
+aov <- aov(places_score ~ gender, data = df)
+summary(aov)
+#multiple pairwise-comparison
+tukey <- TukeyHSD(aov) #with 95% conf.level
+tukey
+#check for normality
+plot(aov, 2)
+#print the model tables from the anova
+print(model.tables(aov,"means"),digits=3)
+
+#Related Searches
+df <- cbind.data.frame(data2$GENDER, data2$HELP_RS)
+names(df) <- c("gender","rs_score")
+df <- na.omit(df)
+#Table
+tbl <- table(df$gender, df$rs_score)
+tbl
+#ANOVA
+aov <- aov(rs_score ~ gender, data = df)
+summary(aov)
+#multiple pairwise-comparison
+tukey <- TukeyHSD(aov) #with 95% conf.level
+tukey
+#check for normality
+plot(aov, 2)
+#print the model tables from the anova
+print(model.tables(aov,"means"),digits=3)
+
+#Status Updates
+df <- cbind.data.frame(data2$GENDER, data2$HELP_SU)
+names(df) <- c("gender","su_score")
+df <- na.omit(df)
+#Table
+tbl <- table(df$gender, df$su_score)
+tbl
+#ANOVA
+aov <- aov(su_score ~ gender, data = df)
+summary(aov)
+#multiple pairwise-comparison
+tukey <- TukeyHSD(aov) #with 95% conf.level
+tukey
+#check for normality
+plot(aov, 2)
+#print the model tables from the anova
+print(model.tables(aov,"means"),digits=3)
+
+#Videos
+df <- cbind.data.frame(data2$GENDER, data2$HELP_VI)
+names(df) <- c("gender","videos_score")
+df <- na.omit(df)
+#Table
+tbl <- table(df$gender, df$videos_score)
+tbl
+#ANOVA
+aov <- aov(videos_score ~ gender, data = df)
+summary(aov)
+#multiple pairwise-comparison
+tukey <- TukeyHSD(aov) #with 95% conf.level
+tukey
+#check for normality
+plot(aov, 2)
+#print the model tables from the anova
+print(model.tables(aov,"means"),digits=3)

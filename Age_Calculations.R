@@ -205,7 +205,7 @@ plot(aov2, 2)
 
 #print the model tables from the anova
 print(model.tables(aov,"means"),digits=3)
-print(model.tables(aov2,"means"),digits=3) 
+print(model.tables(aov2,"means"),digits=3)
 
 #get residuals
 stdres(aov)
@@ -218,120 +218,384 @@ ig <- as.data.frame(data$SM_USE_IG, stringsAsFactors = FALSE) #force to characte
 names(ig)[1] <- "use" #rename column
 ig <- ig$use %>%
   replace_na("Not Used")
-tbl <- table(data$GENDER, ig)
+tbl <- table(data$AGE, ig)
 tbl
 c_test <- chisq.test(tbl)
 c_test
+
+df_ig <- cbind.data.frame(age_num=unlist(age_num), ig) #age numeric
+rownames(df_ig) <- NULL
+names(df_ig)[1] <- "age"
+names(df_ig)[2] <- "use"
+
+aov <- aov(age ~ use, data = df_ig)
+summary(aov)
+
+#multiple pairwise-comparison
+tukey <- TukeyHSD(aov) #with 95% conf.level
+tukey
+plot(tukey)
+
+#check for normality
+plot(aov, 2)
+
+#print the model tables from the anova
+print(model.tables(aov,"means"),digits=3)
+
+#get residuals
+stdres(aov)
 
 #Pinterest
 pi <- as.data.frame(data$SM_USE_PI, stringsAsFactors = FALSE) #force to character type
 names(pi)[1] <- "use" #rename column
 pi <- pi$use %>%
   replace_na("Not Used")
-tbl <- table(data$GENDER, pi)
+tbl <- table(data$AGE, pi)
 tbl
 c_test <- chisq.test(tbl)
 c_test
+
+df_pi <- cbind.data.frame(age_num=unlist(age_num), pi) #age numeric
+rownames(df_pi) <- NULL
+names(df_pi)[1] <- "age"
+names(df_pi)[2] <- "use"
+
+aov <- aov(age ~ use, data = df_pi)
+summary(aov)
+
+#multiple pairwise-comparison
+tukey <- TukeyHSD(aov) #with 95% conf.level
+tukey
+plot(tukey)
+
+#check for normality
+plot(aov, 2)
+
+#print the model tables from the anova
+print(model.tables(aov,"means"),digits=3)
+
+#get residuals
+stdres(aov)
 
 #LinkedIn
 lk <- as.data.frame(data$SM_USE_LK, stringsAsFactors = FALSE) #force to character type
 names(lk)[1] <- "use" #rename column
 lk <- lk$use %>%
   replace_na("Not Used")
-tbl <- table(data$GENDER, lk)
+tbl <- table(data$AGE, lk)
 tbl
 c_test <- chisq.test(tbl)
 c_test
+
+df_lk <- cbind.data.frame(age_num=unlist(age_num), lk) #age numeric
+rownames(df_lk) <- NULL
+names(df_lk)[1] <- "age"
+names(df_lk)[2] <- "use"
+
+aov <- aov(age ~ use, data = df_lk)
+summary(aov)
+
+#multiple pairwise-comparison
+tukey <- TukeyHSD(aov) #with 95% conf.level
+tukey
+plot(tukey)
+
+#check for normality
+plot(aov, 2)
+
+#print the model tables from the anova
+print(model.tables(aov,"means"),digits=3)
+
+#get residuals
+stdres(aov)
 
 #Twitter
 tw <- as.data.frame(data$SM_USE_TW, stringsAsFactors = FALSE) #force to character type
 names(tw)[1] <- "use" #rename column
 tw <- tw$use %>%
   replace_na("Not Used")
-tbl <- table(data$GENDER, tw)
+tbl <- table(data$AGE, tw)
 tbl
 c_test <- chisq.test(tbl)
 c_test
+
+df_tw <- cbind.data.frame(age_num=unlist(age_num), tw) #age numeric
+rownames(df_tw) <- NULL
+names(df_tw)[1] <- "age"
+names(df_tw)[2] <- "use"
+
+aov <- aov(age ~ use, data = df_tw)
+summary(aov)
+
+#multiple pairwise-comparison
+tukey <- TukeyHSD(aov) #with 95% conf.level
+tukey
+plot(tukey)
+
+#check for normality
+plot(aov, 2)
+
+#print the model tables from the anova
+print(model.tables(aov,"means"),digits=3)
+
+#get residuals
+stdres(aov)
 
 #YouTube
 yt <- as.data.frame(data$SM_USE_YT, stringsAsFactors = FALSE) #force to character type
 names(yt)[1] <- "use" #rename column
 yt <- yt$use %>%
   replace_na("Not Used")
-tbl <- table(data$GENDER, yt)
+tbl <- table(data$AGE, yt)
 tbl
 c_test <- chisq.test(tbl)
 c_test
+
+df_yt <- cbind.data.frame(age_num=unlist(age_num), yt) #age numeric
+rownames(df_yt) <- NULL
+names(df_yt)[1] <- "age"
+names(df_yt)[2] <- "use"
+
+aov <- aov(age ~ use, data = df_yt)
+summary(aov)
+
+#multiple pairwise-comparison
+tukey <- TukeyHSD(aov) #with 95% conf.level
+tukey
+plot(tukey)
+
+#check for normality
+plot(aov, 2)
+
+#print the model tables from the anova
+print(model.tables(aov,"means"),digits=3)
+
+#get residuals
+stdres(aov)
 
 #Reddit
 re <- as.data.frame(data$SM_USE_RE, stringsAsFactors = FALSE) #force to character type
 names(re)[1] <- "use" #rename column
 re <- re$use %>%
   replace_na("Not Used")
-tbl <- table(data$GENDER, re)
+tbl <- table(data$AGE, re)
 tbl
-f_test <- exact2x2(tbl, tsmethod = "central")
-f_test
+c_test <- chisq.test(tbl)
+c_test
+
+df_re <- cbind.data.frame(age_num=unlist(age_num), re) #age numeric
+rownames(df_re) <- NULL
+names(df_re)[1] <- "age"
+names(df_re)[2] <- "use"
+
+aov <- aov(age ~ use, data = df_re)
+summary(aov)
+
+#multiple pairwise-comparison
+tukey <- TukeyHSD(aov) #with 95% conf.level
+tukey
+plot(tukey)
+
+#check for normality
+plot(aov, 2)
+
+#print the model tables from the anova
+print(model.tables(aov,"means"),digits=3)
+
+#get residuals
+stdres(aov)
 
 #Tumblr
 tu <- as.data.frame(data$SM_USE_TU, stringsAsFactors = FALSE) #force to character type
 names(tu)[1] <- "use" #rename column
 tu <- tu$use %>%
   replace_na("Not Used")
-tbl <- table(data$GENDER, tu)
+tbl <- table(data$AGE, tu)
 tbl
-f_test <- exact2x2(tbl, tsmethod = "central")
-f_test
+c_test <- chisq.test(tbl)
+c_test
+
+df_tu <- cbind.data.frame(age_num=unlist(age_num), tu) #age numeric
+rownames(df_tu) <- NULL
+names(df_tu)[1] <- "age"
+names(df_tu)[2] <- "use"
+
+aov <- aov(age ~ use, data = df_tu)
+summary(aov)
+
+#multiple pairwise-comparison
+tukey <- TukeyHSD(aov) #with 95% conf.level
+tukey
+plot(tukey)
+
+#check for normality
+plot(aov, 2)
+
+#print the model tables from the anova
+print(model.tables(aov,"means"),digits=3)
+
+#get residuals
+stdres(aov)
 
 #Flickr
 fl <- as.data.frame(data$SM_USE_FL, stringsAsFactors = FALSE) #force to character type
 names(fl)[1] <- "use" #rename column
 fl <- fl$use %>%
   replace_na("Not Used")
-tbl <- table(data$GENDER, fl)
+tbl <- table(data$AGE, fl)
 tbl
-f_test <- exact2x2(tbl, tsmethod = "central")
-f_test
+c_test <- chisq.test(tbl)
+c_test
+
+df_fl <- cbind.data.frame(age_num=unlist(age_num), fl) #age numeric
+rownames(df_fl) <- NULL
+names(df_fl)[1] <- "age"
+names(df_fl)[2] <- "use"
+
+aov <- aov(age ~ use, data = df_fl)
+summary(aov)
+
+#multiple pairwise-comparison
+tukey <- TukeyHSD(aov) #with 95% conf.level
+tukey
+plot(tukey)
+
+#check for normality
+plot(aov, 2)
+
+#print the model tables from the anova
+print(model.tables(aov,"means"),digits=3)
+
+#get residuals
+stdres(aov)
 
 #Google+
 go <- as.data.frame(data$SM_USE_GO, stringsAsFactors = FALSE) #force to character type
 names(go)[1] <- "use" #rename column
 go <- go$use %>%
   replace_na("Not Used")
-tbl <- table(data$GENDER, go)
+tbl <- table(data$AGE, go)
 tbl
 c_test <- chisq.test(tbl)
 c_test
+
+df_go <- cbind.data.frame(age_num=unlist(age_num), go) #age numeric
+rownames(df_go) <- NULL
+names(df_go)[1] <- "age"
+names(df_go)[2] <- "use"
+
+aov <- aov(age ~ use, data = df_go)
+summary(aov)
+
+#multiple pairwise-comparison
+tukey <- TukeyHSD(aov) #with 95% conf.level
+tukey
+plot(tukey)
+
+#check for normality
+plot(aov, 2)
+
+#print the model tables from the anova
+print(model.tables(aov,"means"),digits=3)
+
+#get residuals
+stdres(aov)
 
 #Snapchat
 sc <- as.data.frame(data$SM_USE_SC, stringsAsFactors = FALSE) #force to character type
 names(sc)[1] <- "use" #rename column
 sc <- sc$use %>%
   replace_na("Not Used")
-tbl <- table(data$GENDER, sc)
+tbl <- table(data$AGE, sc)
 tbl
 c_test <- chisq.test(tbl)
 c_test
+
+df_sc <- cbind.data.frame(age_num=unlist(age_num), sc) #age numeric
+rownames(df_sc) <- NULL
+names(df_sc)[1] <- "age"
+names(df_sc)[2] <- "use"
+
+aov <- aov(age ~ use, data = df_sc)
+summary(aov)
+
+#multiple pairwise-comparison
+tukey <- TukeyHSD(aov) #with 95% conf.level
+tukey
+plot(tukey)
+
+#check for normality
+plot(aov, 2)
+
+#print the model tables from the anova
+print(model.tables(aov,"means"),digits=3)
+
+#get residuals
+stdres(aov)
 
 #WhatsApp
 wa <- as.data.frame(data$SM_USE_WA, stringsAsFactors = FALSE) #force to character type
 names(wa)[1] <- "use" #rename column
 wa <- wa$use %>%
   replace_na("Not Used")
-tbl <- table(data$GENDER, wa)
+tbl <- table(data$AGE, wa)
 tbl
-f_test <- exact2x2(tbl, tsmethod = "central")
-f_test
+c_test <- chisq.test(tbl)
+c_test
+
+df_wa <- cbind.data.frame(age_num=unlist(age_num), wa) #age numeric
+rownames(df_wa) <- NULL
+names(df_wa)[1] <- "age"
+names(df_wa)[2] <- "use"
+
+aov <- aov(age ~ use, data = df_wa)
+summary(aov)
+
+#multiple pairwise-comparison
+tukey <- TukeyHSD(aov) #with 95% conf.level
+tukey
+plot(tukey)
+
+#check for normality
+plot(aov, 2)
+
+#print the model tables from the anova
+print(model.tables(aov,"means"),digits=3)
+
+#get residuals
+stdres(aov)
 
 #WeChat
 wc <- as.data.frame(data$SM_USE_WC, stringsAsFactors = FALSE) #force to character type
 names(wc)[1] <- "use" #rename column
 wc <- wc$use %>%
   replace_na("Not Used")
-tbl <- table(data$GENDER, wc)
+tbl <- table(data$AGE, wc)
 tbl
-f_test <- exact2x2(tbl, tsmethod = "central")
-f_test
+c_test <- chisq.test(tbl)
+c_test
+
+df_wc <- cbind.data.frame(age_num=unlist(age_num), wc) #age numeric
+rownames(df_wc) <- NULL
+names(df_wc)[1] <- "age"
+names(df_wc)[2] <- "use"
+
+aov <- aov(age ~ use, data = df_wc)
+summary(aov)
+
+#multiple pairwise-comparison
+tukey <- TukeyHSD(aov) #with 95% conf.level
+tukey
+plot(tukey)
+
+#check for normality
+plot(aov, 2)
+
+#print the model tables from the anova
+print(model.tables(aov,"means"),digits=3)
+
+#get residuals
+stdres(aov)
 
 #LINE
 # No one chose this response
@@ -341,10 +605,32 @@ vb <- as.data.frame(data$SM_USE_VB, stringsAsFactors = FALSE) #force to characte
 names(vb)[1] <- "use" #rename column
 vb <- vb$use %>%
   replace_na("Not Used")
-tbl <- table(data$GENDER, vb)
+tbl <- table(data$AGE, vb)
 tbl
-f_test <- exact2x2(tbl, tsmethod = "central")
-f_test
+c_test <- chisq.test(tbl)
+c_test
+
+df_vb <- cbind.data.frame(age_num=unlist(age_num), vb) #age numeric
+rownames(df_vb) <- NULL
+names(df_vb)[1] <- "age"
+names(df_vb)[2] <- "use"
+
+aov <- aov(age ~ use, data = df_vb)
+summary(aov)
+
+#multiple pairwise-comparison
+tukey <- TukeyHSD(aov) #with 95% conf.level
+tukey
+plot(tukey)
+
+#check for normality
+plot(aov, 2)
+
+#print the model tables from the anova
+print(model.tables(aov,"means"),digits=3)
+
+#get residuals
+stdres(aov)
 
 #7 Which devices do you use to check social media? Please check all that apply.----
 #PC
@@ -354,8 +640,30 @@ pc <- pc$use %>%
   replace_na("Not Used")
 tbl <- table(data$GENDER, pc)
 tbl
-f_test <- exact2x2(tbl, tsmethod = "central")
-f_test
+c_test <- chisq.test(tbl)
+c_test
+
+df_ig <- cbind.data.frame(age_num=unlist(age_num), ig) #age numeric
+rownames(df_ig) <- NULL
+names(df_ig)[1] <- "age"
+names(df_ig)[2] <- "use"
+
+aov <- aov(age ~ use, data = df_ig)
+summary(aov)
+
+#multiple pairwise-comparison
+tukey <- TukeyHSD(aov) #with 95% conf.level
+tukey
+plot(tukey)
+
+#check for normality
+plot(aov, 2)
+
+#print the model tables from the anova
+print(model.tables(aov,"means"),digits=3)
+
+#get residuals
+stdres(aov)
 
 #Phone
 ph <- as.data.frame(data$DEVICE_PHONE, stringsAsFactors = FALSE) #force to character type

@@ -995,17 +995,17 @@ yt <- as.data.frame(data$AG_USE_YT, stringsAsFactors = FALSE) #force to characte
 names(yt)[1] <- "use" #rename column
 yt <- yt$use %>%
   replace_na("Not Used")
-tbl <- table(data$GENDER, yt)
+tbl <- table(data$AGE, yt)
 tbl
 c_test <- chisq.test(tbl)
 c_test
 
-df_ig <- cbind.data.frame(age_num=unlist(age_num), ig) #age numeric
-rownames(df_ig) <- NULL
-names(df_ig)[1] <- "age"
-names(df_ig)[2] <- "use"
+df_yt <- cbind.data.frame(age_num=unlist(age_num), yt) #age numeric
+rownames(df_yt) <- NULL
+names(df_yt)[1] <- "age"
+names(df_yt)[2] <- "use"
 
-aov <- aov(age ~ use, data = df_ig)
+aov <- aov(age ~ use, data = df_yt)
 summary(aov)
 
 #multiple pairwise-comparison
@@ -1027,17 +1027,17 @@ re <- as.data.frame(data$AG_USE_RE, stringsAsFactors = FALSE) #force to characte
 names(re)[1] <- "use" #rename column
 re <- re$use %>%
   replace_na("Not Used")
-tbl <- table(data$GENDER, re)
+tbl <- table(data$AGE, re)
 tbl
-f_test <- exact2x2(tbl, tsmethod = "central")
-f_test
+c_test <- chisq.test(tbl)
+c_test
 
-df_ig <- cbind.data.frame(age_num=unlist(age_num), ig) #age numeric
-rownames(df_ig) <- NULL
-names(df_ig)[1] <- "age"
-names(df_ig)[2] <- "use"
+df_re <- cbind.data.frame(age_num=unlist(age_num), re) #age numeric
+rownames(df_re) <- NULL
+names(df_re)[1] <- "age"
+names(df_re)[2] <- "use"
 
-aov <- aov(age ~ use, data = df_ig)
+aov <- aov(age ~ use, data = df_re)
 summary(aov)
 
 #multiple pairwise-comparison
@@ -1059,17 +1059,17 @@ tu <- as.data.frame(data$AG_USE_TU, stringsAsFactors = FALSE) #force to characte
 names(tu)[1] <- "use" #rename column
 tu <- tu$use %>%
   replace_na("Not Used")
-tbl <- table(data$GENDER, tu)
+tbl <- table(data$AGE, tu)
 tbl
-f_test <- exact2x2(tbl, tsmethod = "central")
-f_test
+c_test <- chisq.test(tbl)
+c_test
 
-df_ig <- cbind.data.frame(age_num=unlist(age_num), ig) #age numeric
-rownames(df_ig) <- NULL
-names(df_ig)[1] <- "age"
-names(df_ig)[2] <- "use"
+df_tu <- cbind.data.frame(age_num=unlist(age_num), tu) #age numeric
+rownames(df_tu) <- NULL
+names(df_tu)[1] <- "age"
+names(df_tu)[2] <- "use"
 
-aov <- aov(age ~ use, data = df_ig)
+aov <- aov(age ~ use, data = df_tu)
 summary(aov)
 
 #multiple pairwise-comparison
@@ -1091,17 +1091,17 @@ fl <- as.data.frame(data$AG_USE_FL, stringsAsFactors = FALSE) #force to characte
 names(fl)[1] <- "use" #rename column
 fl <- fl$use %>%
   replace_na("Not Used")
-tbl <- table(data$GENDER, fl)
+tbl <- table(data$AGE, fl)
 tbl
-f_test <- exact2x2(tbl, tsmethod = "central")
-f_test
+c_test <- chisq.test(tbl)
+c_test
 
-df_ig <- cbind.data.frame(age_num=unlist(age_num), ig) #age numeric
-rownames(df_ig) <- NULL
-names(df_ig)[1] <- "age"
-names(df_ig)[2] <- "use"
+df_fl <- cbind.data.frame(age_num=unlist(age_num), fl) #age numeric
+rownames(df_fl) <- NULL
+names(df_fl)[1] <- "age"
+names(df_fl)[2] <- "use"
 
-aov <- aov(age ~ use, data = df_ig)
+aov <- aov(age ~ use, data = df_fl)
 summary(aov)
 
 #multiple pairwise-comparison
@@ -1123,17 +1123,17 @@ go <- as.data.frame(data$AG_USE_GO, stringsAsFactors = FALSE) #force to characte
 names(go)[1] <- "use" #rename column
 go <- go$use %>%
   replace_na("Not Used")
-tbl <- table(data$GENDER, go)
+tbl <- table(data$AGE, go)
 tbl
 c_test <- chisq.test(tbl)
 c_test
 
-df_ig <- cbind.data.frame(age_num=unlist(age_num), ig) #age numeric
-rownames(df_ig) <- NULL
-names(df_ig)[1] <- "age"
-names(df_ig)[2] <- "use"
+df_go <- cbind.data.frame(age_num=unlist(age_num), go) #age numeric
+rownames(df_go) <- NULL
+names(df_go)[1] <- "age"
+names(df_go)[2] <- "use"
 
-aov <- aov(age ~ use, data = df_ig)
+aov <- aov(age ~ use, data = df_go)
 summary(aov)
 
 #multiple pairwise-comparison
@@ -1155,17 +1155,17 @@ sc <- as.data.frame(data$AG_USE_SC, stringsAsFactors = FALSE) #force to characte
 names(sc)[1] <- "use" #rename column
 sc <- sc$use %>%
   replace_na("Not Used")
-tbl <- table(data$GENDER, sc)
+tbl <- table(data$AGE, sc)
 tbl
-f_test <- exact2x2(tbl, tsmethod = "central")
-f_test
+c_test <- chisq.test(tbl)
+c_test
 
-df_ig <- cbind.data.frame(age_num=unlist(age_num), ig) #age numeric
-rownames(df_ig) <- NULL
-names(df_ig)[1] <- "age"
-names(df_ig)[2] <- "use"
+df_sc <- cbind.data.frame(age_num=unlist(age_num), sc) #age numeric
+rownames(df_sc) <- NULL
+names(df_sc)[1] <- "age"
+names(df_sc)[2] <- "use"
 
-aov <- aov(age ~ use, data = df_ig)
+aov <- aov(age ~ use, data = df_sc)
 summary(aov)
 
 #multiple pairwise-comparison
@@ -1187,17 +1187,17 @@ wa <- as.data.frame(data$AG_USE_WA, stringsAsFactors = FALSE) #force to characte
 names(wa)[1] <- "use" #rename column
 wa <- wa$use %>%
   replace_na("Not Used")
-tbl <- table(data$GENDER, wa)
+tbl <- table(data$AGE, wa)
 tbl
-f_test <- exact2x2(tbl, tsmethod = "central")
-f_test
+c_test <- chisq.test(tbl)
+c_test
 
-df_ig <- cbind.data.frame(age_num=unlist(age_num), ig) #age numeric
-rownames(df_ig) <- NULL
-names(df_ig)[1] <- "age"
-names(df_ig)[2] <- "use"
+df_wa <- cbind.data.frame(age_num=unlist(age_num), wa) #age numeric
+rownames(df_wa) <- NULL
+names(df_wa)[1] <- "age"
+names(df_wa)[2] <- "use"
 
-aov <- aov(age ~ use, data = df_ig)
+aov <- aov(age ~ use, data = df_wa)
 summary(aov)
 
 #multiple pairwise-comparison
@@ -1225,11 +1225,33 @@ stdres(aov)
 
 
 #10 Do you post questions about agriculture on Facebook?----
-tbl <- table(data$GENDER, data$AG_QS_FB)
+tbl <- table(data$AGE, data$AG_QS_FB)
 tbl
 
 chi_test <- chisq.test(tbl)
 chi_test
+
+df <- cbind.data.frame(age_num=unlist(age_num), data$AG_QS_FB) #age numeric
+rownames(df) <- NULL
+names(df)[1] <- "age"
+names(df)[2] <- "question"
+
+aov <- aov(age ~ question, data = df)
+summary(aov)
+
+#multiple pairwise-comparison
+tukey <- TukeyHSD(aov) #with 95% conf.level
+tukey
+plot(tukey)
+
+#check for normality
+plot(aov, 2)
+
+#print the model tables from the anova
+print(model.tables(aov,"means"),digits=3)
+
+#get residuals
+stdres(aov)
 
 #11 If yes, where do you post questions about agriculture on Facebook?----
 ag_yes <- data[which(data$AG_QS_FB=="Yes, I post questions about agriculture on Facebook."),]
@@ -1238,34 +1260,162 @@ ag_yes #only want those who answered yes to Q10
 #In my status updates
 ag_yes$AG_QS_STATUS <- ag_yes$AG_QS_STATUS %>%
   replace_na("Not Used")
-tbl <- table(ag_yes$GENDER, ag_yes$AG_QS_STATUS)
+tbl <- table(ag_yes$AGE, ag_yes$AG_QS_STATUS)
 tbl
 chi_test <- chisq.test(tbl)
 chi_test
+
+df <- cbind.data.frame(ag_yes$AGE,ag_yes$AG_QS_STATUS) #age numeric
+df$age <- as.character(df$age) #needed for some reason ?
+rownames(df) <- NULL
+names(df)[1] <- "age"
+names(df)[2] <- "post"
+
+df$age[df$age == "18-21"] <- 19.5
+df$age[df$age == "22-25"] <- 23.5
+df$age[df$age == "26-30"] <- 28
+df$age[df$age == "31-40"] <- 35.5
+df$age[df$age == "41-50"] <- 45.5
+df$age[df$age == "51-60"] <- 55.5
+df$age[df$age == "61 or over"] <- 61
+df$age <- as.numeric(df$age) #convert to numeric values
+
+aov <- aov(age ~ post, data = df)
+summary(aov)
+
+#multiple pairwise-comparison
+tukey <- TukeyHSD(aov) #with 95% conf.level
+tukey
+plot(tukey)
+
+#check for normality
+plot(aov, 2)
+
+#print the model tables from the anova
+print(model.tables(aov,"means"),digits=3)
+
+#get residuals
+stdres(aov)
 
 #In a group
 ag_yes$AG_QS_GROUP <- ag_yes$AG_QS_GROUP %>%
   replace_na("Not Used")
-tbl <- table(ag_yes$GENDER, ag_yes$AG_QS_GROUP)
+tbl <- table(ag_yes$AGE, ag_yes$AG_QS_GROUP)
 tbl
 chi_test <- chisq.test(tbl)
 chi_test
+
+df <- cbind.data.frame(ag_yes$AGE,ag_yes$AG_QS_GROUP) #age numeric
+rownames(df) <- NULL
+names(df)[1] <- "age"
+names(df)[2] <- "post"
+df$age <- as.character(df$age) #needed after renaming
+
+df$age[df$age == "18-21"] <- 19.5
+df$age[df$age == "22-25"] <- 23.5
+df$age[df$age == "26-30"] <- 28
+df$age[df$age == "31-40"] <- 35.5
+df$age[df$age == "41-50"] <- 45.5
+df$age[df$age == "51-60"] <- 55.5
+df$age[df$age == "61 or over"] <- 61
+df$age <- as.numeric(df$age) #convert to numeric values
+
+aov <- aov(age ~ post, data = df)
+summary(aov)
+
+#multiple pairwise-comparison
+tukey <- TukeyHSD(aov) #with 95% conf.level
+tukey
+plot(tukey)
+
+#check for normality
+plot(aov, 2)
+
+#print the model tables from the anova
+print(model.tables(aov,"means"),digits=3)
+
+#get residuals
+stdres(aov)
 
 #On a page
 ag_yes$AG_QS_PAGE <- ag_yes$AG_QS_PAGE %>%
   replace_na("Not Used")
-tbl <- table(ag_yes$GENDER, ag_yes$AG_QS_PAGE)
+tbl <- table(ag_yes$AGE, ag_yes$AG_QS_PAGE)
 tbl
 chi_test <- chisq.test(tbl)
 chi_test
 
+df <- cbind.data.frame(ag_yes$AGE,ag_yes$AG_QS_PAGE) #age numeric
+rownames(df) <- NULL
+names(df)[1] <- "age"
+names(df)[2] <- "post"
+df$age <- as.character(df$age) #needed after renaming
+
+df$age[df$age == "18-21"] <- 19.5
+df$age[df$age == "22-25"] <- 23.5
+df$age[df$age == "26-30"] <- 28
+df$age[df$age == "31-40"] <- 35.5
+df$age[df$age == "41-50"] <- 45.5
+df$age[df$age == "51-60"] <- 55.5
+df$age[df$age == "61 or over"] <- 61
+df$age <- as.numeric(df$age) #convert to numeric values
+
+aov <- aov(age ~ post, data = df)
+summary(aov)
+
+#multiple pairwise-comparison
+tukey <- TukeyHSD(aov) #with 95% conf.level
+tukey
+plot(tukey)
+
+#check for normality
+plot(aov, 2)
+
+#print the model tables from the anova
+print(model.tables(aov,"means"),digits=3)
+
+#get residuals
+stdres(aov)
+
 #Other
 ag_yes$AG_QS_OTHER <- ag_yes$AG_QS_OTHER %>%
   replace_na("Not Used")
-tbl <- table(ag_yes$GENDER, ag_yes$AG_QS_OTHER)
+tbl <- table(ag_yes$AGE, ag_yes$AG_QS_OTHER)
 tbl
-f_test <- exact2x2(tbl, tsmethod = "central")
-f_test
+chi_test <- chisq.test(tbl)
+chi_test
+
+df <- cbind.data.frame(ag_yes$AGE,ag_yes$AG_QS_OTHER) #age numeric
+rownames(df) <- NULL
+names(df)[1] <- "age"
+names(df)[2] <- "post"
+df$age <- as.character(df$age) #needed after renaming
+
+df$age[df$age == "18-21"] <- 19.5
+df$age[df$age == "22-25"] <- 23.5
+df$age[df$age == "26-30"] <- 28
+df$age[df$age == "31-40"] <- 35.5
+df$age[df$age == "41-50"] <- 45.5
+df$age[df$age == "51-60"] <- 55.5
+df$age[df$age == "61 or over"] <- 61
+df$age <- as.numeric(df$age) #convert to numeric values
+
+aov <- aov(age ~ post, data = df)
+summary(aov)
+
+#multiple pairwise-comparison
+tukey <- TukeyHSD(aov) #with 95% conf.level
+tukey
+plot(tukey)
+
+#check for normality
+plot(aov, 2)
+
+#print the model tables from the anova
+print(model.tables(aov,"means"),digits=3)
+
+#get residuals
+stdres(aov)
 
 #12 The following are types of content you find on Facebook. How helpful are each of them in providing you with agriculture information?----
 
@@ -1277,20 +1427,20 @@ data2[ ,63:74][ data2[ ,63:74] == "Very helpful" ] <- 4
 data2[ ,63:74][ data2[ ,63:74] == "Extremely helpful" ] <- 5
 data2[,63:74] <- sapply(data2[ ,63:74],as.numeric) #convert multiple columns to numeric type
 
-myData <- myData[-c(2, 4, 6), ] #drop a row
+myData <- myData[-c(2, 4, 6), ] #drop a row, don't run, this is example code
 #Grab stadardized residuals to analyze
 stdres(aov)
 
 #Advertisements
-df <- cbind.data.frame(data2$GENDER, data2$HELP_AD)
-names(df) <- c("gender","ads_score")
+df <- cbind.data.frame(data2$AGE, data2$HELP_AD) #rating number
+names(df) <- c("age","ads_score")
 df <- na.omit(df)
-df <- df[-c(71), ] #drop a row
+df <- df[-c(71), ] #droped outlier
 #Table
-tbl <- table(df$gender, df$ads_score)
+tbl <- table(df$age, df$ads_score)
 tbl
 #ANOVA
-aov <- aov(ads_score ~ gender, data = df)
+aov <- aov(ads_score ~ age, data = df)
 summary(aov)
 #multiple pairwise-comparison
 tukey <- TukeyHSD(aov) #with 95% conf.level
@@ -1298,17 +1448,38 @@ tukey
 #check for normality
 plot(aov, 2)
 #print the model tables from the anova
-print(model.tables(aov,"means"),digits=3) 
+print(model.tables(aov,"means"),digits=3)
+#residuals
+stdres(aov)
+
+#Advertisements - age number, rating category
+df <- cbind.data.frame(age_num=unlist(age_num), data$HELP_AD) #age numeric
+rownames(df) <- NULL
+names(df)[1] <- "age"
+names(df)[2] <- "ads_category"
+df <- na.omit(df)
+#ANOVA
+aov <- aov(age ~ ads_category, data = df)
+summary(aov)
+#multiple pairwise-comparison
+tukey <- TukeyHSD(aov) #with 95% conf.level
+tukey
+#check for normality
+plot(aov, 2)
+#print the model tables from the anova
+print(model.tables(aov,"means"),digits=3)
+#residuals
+stdres(aov)
 
 #Apps
-df <- cbind.data.frame(data2$GENDER, data2$HELP_AP)
-names(df) <- c("gender","apps_score")
+df <- cbind.data.frame(data2$AGE, data2$HELP_AP)
+names(df) <- c("age","apps_score")
 df <- na.omit(df)
 #Table
-tbl <- table(df$gender, df$apps_score)
+tbl <- table(df$age, df$apps_score)
 tbl
 #ANOVA
-aov <- aov(apps_score ~ gender, data = df)
+aov <- aov(apps_score ~ age, data = df)
 summary(aov)
 #multiple pairwise-comparison
 tukey <- TukeyHSD(aov) #with 95% conf.level
@@ -1317,16 +1488,36 @@ tukey
 plot(aov, 2)
 #print the model tables from the anova
 print(model.tables(aov,"means"),digits=3)
+#residuals
+stdres(aov)
+
+df <- cbind.data.frame(age_num=unlist(age_num), data$HELP_AP) #age numeric
+rownames(df) <- NULL
+names(df)[1] <- "age"
+names(df)[2] <- "apps_score"
+df <- na.omit(df)
+#ANOVA
+aov <- aov(age ~ apps_score, data = df)
+summary(aov)
+#multiple pairwise-comparison
+tukey <- TukeyHSD(aov) #with 95% conf.level
+tukey
+#check for normality
+plot(aov, 2)
+#print the model tables from the anova
+print(model.tables(aov,"means"),digits=3)
+#residuals
+stdres(aov)
 
 #Articles
-df <- cbind.data.frame(data2$GENDER, data2$HELP_AR)
-names(df) <- c("gender","articles_score")
+df <- cbind.data.frame(data2$AGE, data2$HELP_AR)
+names(df) <- c("age","articles_score")
 df <- na.omit(df)
 #Table
-tbl <- table(df$gender, df$articles_score)
+tbl <- table(df$age, df$articles_score)
 tbl
 #ANOVA
-aov <- aov(articles_score ~ gender, data = df)
+aov <- aov(articles_score ~ age, data = df)
 summary(aov)
 #multiple pairwise-comparison
 tukey <- TukeyHSD(aov) #with 95% conf.level
@@ -1335,16 +1526,36 @@ tukey
 plot(aov, 2)
 #print the model tables from the anova
 print(model.tables(aov,"means"),digits=3)
+#residuals
+stdres(aov)
+
+df <- cbind.data.frame(age_num=unlist(age_num), data$HELP_AR) #age numeric
+rownames(df) <- NULL
+names(df)[1] <- "age"
+names(df)[2] <- "articles_score"
+df <- na.omit(df)
+#ANOVA
+aov <- aov(age ~ articles_score, data = df)
+summary(aov)
+#multiple pairwise-comparison
+tukey <- TukeyHSD(aov) #with 95% conf.level
+tukey
+#check for normality
+plot(aov, 2)
+#print the model tables from the anova
+print(model.tables(aov,"means"),digits=3)
+#residuals
+stdres(aov)
 
 #Events
-df <- cbind.data.frame(data2$GENDER, data2$HELP_EV)
-names(df) <- c("gender","events_score")
+df <- cbind.data.frame(data2$AGE, data2$HELP_EV)
+names(df) <- c("age","events_score")
 df <- na.omit(df)
 #Table
-tbl <- table(df$gender, df$events_score)
+tbl <- table(df$age, df$events_score)
 tbl
 #ANOVA
-aov <- aov(events_score ~ gender, data = df)
+aov <- aov(events_score ~ age, data = df)
 summary(aov)
 #multiple pairwise-comparison
 tukey <- TukeyHSD(aov) #with 95% conf.level
@@ -1353,16 +1564,36 @@ tukey
 plot(aov, 2)
 #print the model tables from the anova
 print(model.tables(aov,"means"),digits=3)
+#residuals
+stdres(aov)
+
+df <- cbind.data.frame(age_num=unlist(age_num), data$HELP_EV) #age numeric
+rownames(df) <- NULL
+names(df)[1] <- "age"
+names(df)[2] <- "events_score"
+df <- na.omit(df)
+#ANOVA
+aov <- aov(age ~ events_score, data = df)
+summary(aov)
+#multiple pairwise-comparison
+tukey <- TukeyHSD(aov) #with 95% conf.level
+tukey
+#check for normality
+plot(aov, 2)
+#print the model tables from the anova
+print(model.tables(aov,"means"),digits=3)
+#residuals
+stdres(aov)
 
 #Groups
-df <- cbind.data.frame(data2$GENDER, data2$HELP_GR)
-names(df) <- c("gender","groups_score")
+df <- cbind.data.frame(data2$AGE, data2$HELP_GR)
+names(df) <- c("age","groups_score")
 df <- na.omit(df)
 #Table
-tbl <- table(df$gender, df$groups_score)
+tbl <- table(df$age, df$groups_score)
 tbl
 #ANOVA
-aov <- aov(groups_score ~ gender, data = df)
+aov <- aov(groups_score ~ age, data = df)
 summary(aov)
 #multiple pairwise-comparison
 tukey <- TukeyHSD(aov) #with 95% conf.level
@@ -1371,16 +1602,37 @@ tukey
 plot(aov, 2)
 #print the model tables from the anova
 print(model.tables(aov,"means"),digits=3)
+#residuals
+stdres(aov)
+
+df <- cbind.data.frame(age_num=unlist(age_num), data$HELP_GR) #age numeric
+rownames(df) <- NULL
+names(df)[1] <- "age"
+names(df)[2] <- "groups_score"
+df <- na.omit(df)
+#ANOVA
+aov <- aov(age ~ groups_score, data = df)
+summary(aov)
+#multiple pairwise-comparison
+tukey <- TukeyHSD(aov) #with 95% conf.level
+tukey
+#check for normality
+plot(aov, 2)
+#print the model tables from the anova
+print(model.tables(aov,"means"),digits=3)
+#residuals
+stdres(aov)
 
 #Links
-df <- cbind.data.frame(data2$GENDER, data2$HELP_LI)
-names(df) <- c("gender","links_score")
+df <- cbind.data.frame(data2$AGE, data2$HELP_LI)
+names(df) <- c("age","links_score")
 df <- na.omit(df)
+df <- df[-c(74), ] #droped outlier
 #Table
-tbl <- table(df$gender, df$links_score)
+tbl <- table(df$age, df$links_score)
 tbl
 #ANOVA
-aov <- aov(links_score ~ gender, data = df)
+aov <- aov(links_score ~ age, data = df)
 summary(aov)
 #multiple pairwise-comparison
 tukey <- TukeyHSD(aov) #with 95% conf.level
@@ -1389,16 +1641,36 @@ tukey
 plot(aov, 2)
 #print the model tables from the anova
 print(model.tables(aov,"means"),digits=3)
+#residuals
+stdres(aov)
+
+df <- cbind.data.frame(age_num=unlist(age_num), data$HELP_LI) #age numeric
+rownames(df) <- NULL
+names(df)[1] <- "age"
+names(df)[2] <- "links_score"
+df <- na.omit(df)
+#ANOVA
+aov <- aov(age ~ links_score, data = df)
+summary(aov)
+#multiple pairwise-comparison
+tukey <- TukeyHSD(aov) #with 95% conf.level
+tukey
+#check for normality
+plot(aov, 2)
+#print the model tables from the anova
+print(model.tables(aov,"means"),digits=3)
+#residuals
+stdres(aov)
 
 #Pages
-df <- cbind.data.frame(data2$GENDER, data2$HELP_PA)
-names(df) <- c("gender","pages_score")
+df <- cbind.data.frame(data2$AGE, data2$HELP_PA)
+names(df) <- c("age","pages_score")
 df <- na.omit(df)
 #Table
-tbl <- table(df$gender, df$pages_score)
+tbl <- table(df$age, df$pages_score)
 tbl
 #ANOVA
-aov <- aov(pages_score ~ gender, data = df)
+aov <- aov(pages_score ~ age, data = df)
 summary(aov)
 #multiple pairwise-comparison
 tukey <- TukeyHSD(aov) #with 95% conf.level
@@ -1407,16 +1679,36 @@ tukey
 plot(aov, 2)
 #print the model tables from the anova
 print(model.tables(aov,"means"),digits=3)
+#residuals
+stdres(aov)
+
+df <- cbind.data.frame(age_num=unlist(age_num), data$HELP_PA) #age numeric
+rownames(df) <- NULL
+names(df)[1] <- "age"
+names(df)[2] <- "pages_score"
+df <- na.omit(df)
+#ANOVA
+aov <- aov(age ~ pages_score, data = df)
+summary(aov)
+#multiple pairwise-comparison
+tukey <- TukeyHSD(aov) #with 95% conf.level
+tukey
+#check for normality
+plot(aov, 2)
+#print the model tables from the anova
+print(model.tables(aov,"means"),digits=3)
+#residuals
+stdres(aov)
 
 #Photos
-df <- cbind.data.frame(data2$GENDER, data2$HELP_PH)
-names(df) <- c("gender","photos_score")
+df <- cbind.data.frame(data2$AGE, data2$HELP_PH)
+names(df) <- c("age","photos_score")
 df <- na.omit(df)
 #Table
-tbl <- table(df$gender, df$photos_score)
+tbl <- table(df$age, df$photos_score)
 tbl
 #ANOVA
-aov <- aov(photos_score ~ gender, data = df)
+aov <- aov(photos_score ~ age, data = df)
 summary(aov)
 #multiple pairwise-comparison
 tukey <- TukeyHSD(aov) #with 95% conf.level
@@ -1425,16 +1717,36 @@ tukey
 plot(aov, 2)
 #print the model tables from the anova
 print(model.tables(aov,"means"),digits=3)
+#residuals
+stdres(aov)
+
+df <- cbind.data.frame(age_num=unlist(age_num), data$HELP_PH) #age numeric
+rownames(df) <- NULL
+names(df)[1] <- "age"
+names(df)[2] <- "photos_score"
+df <- na.omit(df)
+#ANOVA
+aov <- aov(age ~ photos_score, data = df)
+summary(aov)
+#multiple pairwise-comparison
+tukey <- TukeyHSD(aov) #with 95% conf.level
+tukey
+#check for normality
+plot(aov, 2)
+#print the model tables from the anova
+print(model.tables(aov,"means"),digits=3)
+#residuals
+stdres(aov)
 
 #Places
-df <- cbind.data.frame(data2$GENDER, data2$HELP_PL)
-names(df) <- c("gender","places_score")
+df <- cbind.data.frame(data2$AGE, data2$HELP_PL)
+names(df) <- c("age","places_score")
 df <- na.omit(df)
 #Table
-tbl <- table(df$gender, df$places_score)
+tbl <- table(df$age, df$places_score)
 tbl
 #ANOVA
-aov <- aov(places_score ~ gender, data = df)
+aov <- aov(places_score ~ age, data = df)
 summary(aov)
 #multiple pairwise-comparison
 tukey <- TukeyHSD(aov) #with 95% conf.level
@@ -1443,16 +1755,36 @@ tukey
 plot(aov, 2)
 #print the model tables from the anova
 print(model.tables(aov,"means"),digits=3)
+#residuals
+stdres(aov)
+
+df <- cbind.data.frame(age_num=unlist(age_num), data$HELP_PL) #age numeric
+rownames(df) <- NULL
+names(df)[1] <- "age"
+names(df)[2] <- "places_score"
+df <- na.omit(df)
+#ANOVA
+aov <- aov(age ~ places_score, data = df)
+summary(aov)
+#multiple pairwise-comparison
+tukey <- TukeyHSD(aov) #with 95% conf.level
+tukey
+#check for normality
+plot(aov, 2)
+#print the model tables from the anova
+print(model.tables(aov,"means"),digits=3)
+#residuals
+stdres(aov)
 
 #Related Searches
-df <- cbind.data.frame(data2$GENDER, data2$HELP_RS)
-names(df) <- c("gender","rs_score")
+df <- cbind.data.frame(data2$AGE, data2$HELP_RS)
+names(df) <- c("age","rs_score")
 df <- na.omit(df)
 #Table
-tbl <- table(df$gender, df$rs_score)
+tbl <- table(df$age, df$rs_score)
 tbl
 #ANOVA
-aov <- aov(rs_score ~ gender, data = df)
+aov <- aov(rs_score ~ age, data = df)
 summary(aov)
 #multiple pairwise-comparison
 tukey <- TukeyHSD(aov) #with 95% conf.level
@@ -1461,16 +1793,36 @@ tukey
 plot(aov, 2)
 #print the model tables from the anova
 print(model.tables(aov,"means"),digits=3)
+#residuals
+stdres(aov)
+
+df <- cbind.data.frame(age_num=unlist(age_num), data$HELP_RS) #age numeric
+rownames(df) <- NULL
+names(df)[1] <- "age"
+names(df)[2] <- "rs_score"
+df <- na.omit(df)
+#ANOVA
+aov <- aov(age ~ rs_score, data = df)
+summary(aov)
+#multiple pairwise-comparison
+tukey <- TukeyHSD(aov) #with 95% conf.level
+tukey
+#check for normality
+plot(aov, 2)
+#print the model tables from the anova
+print(model.tables(aov,"means"),digits=3)
+#residuals
+stdres(aov)
 
 #Status Updates
-df <- cbind.data.frame(data2$GENDER, data2$HELP_SU)
-names(df) <- c("gender","su_score")
+df <- cbind.data.frame(data2$AGE, data2$HELP_SU)
+names(df) <- c("age","su_score")
 df <- na.omit(df)
 #Table
-tbl <- table(df$gender, df$su_score)
+tbl <- table(df$age, df$su_score)
 tbl
 #ANOVA
-aov <- aov(su_score ~ gender, data = df)
+aov <- aov(su_score ~ age, data = df)
 summary(aov)
 #multiple pairwise-comparison
 tukey <- TukeyHSD(aov) #with 95% conf.level
@@ -1479,16 +1831,36 @@ tukey
 plot(aov, 2)
 #print the model tables from the anova
 print(model.tables(aov,"means"),digits=3)
+#residuals
+stdres(aov)
+
+df <- cbind.data.frame(age_num=unlist(age_num), data$HELP_SU) #age numeric
+rownames(df) <- NULL
+names(df)[1] <- "age"
+names(df)[2] <- "su_score"
+df <- na.omit(df)
+#ANOVA
+aov <- aov(age ~ su_score, data = df)
+summary(aov)
+#multiple pairwise-comparison
+tukey <- TukeyHSD(aov) #with 95% conf.level
+tukey
+#check for normality
+plot(aov, 2)
+#print the model tables from the anova
+print(model.tables(aov,"means"),digits=3)
+#residuals
+stdres(aov)
 
 #Videos
-df <- cbind.data.frame(data2$GENDER, data2$HELP_VI)
-names(df) <- c("gender","videos_score")
+df <- cbind.data.frame(data2$AGE, data2$HELP_VI)
+names(df) <- c("age","videos_score")
 df <- na.omit(df)
 #Table
-tbl <- table(df$gender, df$videos_score)
+tbl <- table(df$age, df$videos_score)
 tbl
 #ANOVA
-aov <- aov(videos_score ~ gender, data = df)
+aov <- aov(videos_score ~ age, data = df)
 summary(aov)
 #multiple pairwise-comparison
 tukey <- TukeyHSD(aov) #with 95% conf.level
@@ -1497,3 +1869,23 @@ tukey
 plot(aov, 2)
 #print the model tables from the anova
 print(model.tables(aov,"means"),digits=3)
+#residuals
+stdres(aov)
+
+df <- cbind.data.frame(age_num=unlist(age_num), data$HELP_VI) #age numeric
+rownames(df) <- NULL
+names(df)[1] <- "age"
+names(df)[2] <- "videos_score"
+df <- na.omit(df)
+#ANOVA
+aov <- aov(age ~ videos_score, data = df)
+summary(aov)
+#multiple pairwise-comparison
+tukey <- TukeyHSD(aov) #with 95% conf.level
+tukey
+#check for normality
+plot(aov, 2)
+#print the model tables from the anova
+print(model.tables(aov,"means"),digits=3)
+#residuals
+stdres(aov)

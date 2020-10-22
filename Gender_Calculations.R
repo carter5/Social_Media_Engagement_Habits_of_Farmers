@@ -3,6 +3,9 @@ library(readr)
 library(exact2x2)
 library(tidyr)
 library(MASS) #grabbing residuals
+library(plyr) #for counting function
+library(tibble) #add_row
+library(DescTools) #cramer's V and phi test
 
 #Load data----
 data <- read_csv("Survey Data 2-23-19_Demographics_Edited.csv")
@@ -207,6 +210,13 @@ tbl
 c_test <- chisq.test(tbl)
 c_test
 
+c_test$expected
+c_test$residuals
+c_test$stdres
+
+phi_test <- Phi(tbl)  #the Phi function uses DescTools package, used for 2x2 tables
+phi_test
+
 #LinkedIn
 lk <- as.data.frame(data$SM_USE_LK, stringsAsFactors = FALSE) #force to character type
 names(lk)[1] <- "use" #rename column
@@ -328,8 +338,15 @@ pc <- pc$use %>%
   replace_na("Not Used")
 tbl <- table(data$GENDER, pc)
 tbl
-f_test <- exact2x2(tbl, tsmethod = "central")
-f_test
+c_test <- chisq.test(tbl, correct = FALSE)
+c_test
+
+c_test$expected
+c_test$residuals
+c_test$stdres
+
+phi_test <- Phi(tbl)
+phi_test
 
 #Phone
 ph <- as.data.frame(data$DEVICE_PHONE, stringsAsFactors = FALSE) #force to character type
@@ -413,8 +430,15 @@ pi <- pi$use %>%
   replace_na("Not Used")
 tbl <- table(data$GENDER, pi)
 tbl
-f_test <- exact2x2(tbl, tsmethod = "central")
-f_test
+c_test <- chisq.test(tbl, correct=FALSE)
+c_test
+
+c_test$expected
+c_test$residuals
+c_test$stdres
+
+phi_test <- Phi(tbl)
+phi_test
 
 #LinkedIn
 lk <- as.data.frame(data$AG_USE_LK, stringsAsFactors = FALSE) #force to character type

@@ -3,6 +3,9 @@ library(readr)
 library(exact2x2)
 library(tidyr)
 library(MASS) #grabbing residuals
+library(plyr) #for counting function
+library(tibble) #add_row
+library(DescTools) #cramer's V and phi test
 
 #Load data----
 data <- read_csv("Survey Data 2-23-19_Demographics_Edited.csv")
@@ -18,6 +21,8 @@ names(age)[1] <- "label" #rename column
 #Create the categorical table w/ original dataframe
 tbl <- table(data$AGE, data$FB_LONG_USE)
 tbl
+f_test <- fisher.test(tbl, hybrid = TRUE) #larger than 2x2 tables use hybrid=TRUE
+f_test
 
 #One-Way ANOVA
 #Create numeric variables for age and use
@@ -60,6 +65,7 @@ summary(aov2)
 #7x4 table - categorical
 tbl <- table(data$AGE, data$FB_OFTEN_USE)
 tbl
+
 
 #7x4 table - numerical
 fb_often_num <- as.data.frame(data$FB_OFTEN_USE, stringsAsFactors = FALSE)
@@ -110,6 +116,8 @@ tbl #counts are really small and only 1 answer different than Q1 which was highl
 #7x5 Table
 tbl <- table(data$AGE, data$SM_OFTEN_USE)
 tbl
+f_test <- fisher.test(tbl, hybrid = TRUE) #larger than 2x2 tables use hybrid=TRUE
+f_test
 
 #7x5 Table - ANOVA
 sm_often_num <- as.data.frame(data$SM_OFTEN_USE, stringsAsFactors = FALSE)
@@ -131,7 +139,7 @@ rownames(df_sm_often2) <- NULL
 names(df_sm_often2)[1] <- "age"
 names(df_sm_often2)[2] <- "time"
 
-aov <- aov(time ~ age, data = df_sm_often)
+aov <- aov(time ~ age, data = df_sm_often) #time as a number
 summary(aov)
 
 aov2 <- aov(age ~ time, data = df_sm_often2)
@@ -184,7 +192,7 @@ rownames(df_skills2) <- NULL
 names(df_skills2)[1] <- "age"
 names(df_skills2)[2] <- "rating"
 
-aov <- aov(rating ~ age, data = df_skills)
+aov <- aov(rating ~ age, data = df_skills) #rating number
 summary(aov)
 
 aov2 <- aov(age ~ rating, data = df_skills2)
@@ -220,30 +228,15 @@ ig <- ig$use %>%
   replace_na("Not Used")
 tbl <- table(data$AGE, ig)
 tbl
+
 c_test <- chisq.test(tbl)
 c_test
 
-df_ig <- cbind.data.frame(age_num=unlist(age_num), ig) #age numeric
-rownames(df_ig) <- NULL
-names(df_ig)[1] <- "age"
-names(df_ig)[2] <- "use"
+f_test <- fisher.test(tbl, hybrid = TRUE)
+f_test
 
-aov <- aov(age ~ use, data = df_ig)
-summary(aov)
-
-#multiple pairwise-comparison
-tukey <- TukeyHSD(aov) #with 95% conf.level
-tukey
-plot(tukey)
-
-#check for normality
-plot(aov, 2)
-
-#print the model tables from the anova
-print(model.tables(aov,"means"),digits=3)
-
-#get residuals
-stdres(aov)
+cramer_value <- CramerV(tbl) #used for bigger than 2x2 tables
+cramer_value
 
 #Pinterest
 pi <- as.data.frame(data$SM_USE_PI, stringsAsFactors = FALSE) #force to character type
@@ -255,27 +248,11 @@ tbl
 c_test <- chisq.test(tbl)
 c_test
 
-df_pi <- cbind.data.frame(age_num=unlist(age_num), pi) #age numeric
-rownames(df_pi) <- NULL
-names(df_pi)[1] <- "age"
-names(df_pi)[2] <- "use"
+f_test <- fisher.test(tbl, hybrid = TRUE)
+f_test
 
-aov <- aov(age ~ use, data = df_pi)
-summary(aov)
-
-#multiple pairwise-comparison
-tukey <- TukeyHSD(aov) #with 95% conf.level
-tukey
-plot(tukey)
-
-#check for normality
-plot(aov, 2)
-
-#print the model tables from the anova
-print(model.tables(aov,"means"),digits=3)
-
-#get residuals
-stdres(aov)
+cramer_value <- CramerV(tbl) #used for bigger than 2x2 tables
+cramer_value
 
 #LinkedIn
 lk <- as.data.frame(data$SM_USE_LK, stringsAsFactors = FALSE) #force to character type
@@ -287,27 +264,11 @@ tbl
 c_test <- chisq.test(tbl)
 c_test
 
-df_lk <- cbind.data.frame(age_num=unlist(age_num), lk) #age numeric
-rownames(df_lk) <- NULL
-names(df_lk)[1] <- "age"
-names(df_lk)[2] <- "use"
+f_test <- fisher.test(tbl, hybrid = TRUE)
+f_test
 
-aov <- aov(age ~ use, data = df_lk)
-summary(aov)
-
-#multiple pairwise-comparison
-tukey <- TukeyHSD(aov) #with 95% conf.level
-tukey
-plot(tukey)
-
-#check for normality
-plot(aov, 2)
-
-#print the model tables from the anova
-print(model.tables(aov,"means"),digits=3)
-
-#get residuals
-stdres(aov)
+cramer_value <- CramerV(tbl) #used for bigger than 2x2 tables
+cramer_value
 
 #Twitter
 tw <- as.data.frame(data$SM_USE_TW, stringsAsFactors = FALSE) #force to character type
@@ -319,27 +280,11 @@ tbl
 c_test <- chisq.test(tbl)
 c_test
 
-df_tw <- cbind.data.frame(age_num=unlist(age_num), tw) #age numeric
-rownames(df_tw) <- NULL
-names(df_tw)[1] <- "age"
-names(df_tw)[2] <- "use"
+f_test <- fisher.test(tbl, hybrid = TRUE)
+f_test
 
-aov <- aov(age ~ use, data = df_tw)
-summary(aov)
-
-#multiple pairwise-comparison
-tukey <- TukeyHSD(aov) #with 95% conf.level
-tukey
-plot(tukey)
-
-#check for normality
-plot(aov, 2)
-
-#print the model tables from the anova
-print(model.tables(aov,"means"),digits=3)
-
-#get residuals
-stdres(aov)
+cramer_value <- CramerV(tbl) #used for bigger than 2x2 tables
+cramer_value
 
 #YouTube
 yt <- as.data.frame(data$SM_USE_YT, stringsAsFactors = FALSE) #force to character type
@@ -351,27 +296,11 @@ tbl
 c_test <- chisq.test(tbl)
 c_test
 
-df_yt <- cbind.data.frame(age_num=unlist(age_num), yt) #age numeric
-rownames(df_yt) <- NULL
-names(df_yt)[1] <- "age"
-names(df_yt)[2] <- "use"
+f_test <- fisher.test(tbl, hybrid = TRUE)
+f_test
 
-aov <- aov(age ~ use, data = df_yt)
-summary(aov)
-
-#multiple pairwise-comparison
-tukey <- TukeyHSD(aov) #with 95% conf.level
-tukey
-plot(tukey)
-
-#check for normality
-plot(aov, 2)
-
-#print the model tables from the anova
-print(model.tables(aov,"means"),digits=3)
-
-#get residuals
-stdres(aov)
+cramer_value <- CramerV(tbl) #used for bigger than 2x2 tables
+cramer_value
 
 #Reddit
 re <- as.data.frame(data$SM_USE_RE, stringsAsFactors = FALSE) #force to character type
@@ -383,27 +312,11 @@ tbl
 c_test <- chisq.test(tbl)
 c_test
 
-df_re <- cbind.data.frame(age_num=unlist(age_num), re) #age numeric
-rownames(df_re) <- NULL
-names(df_re)[1] <- "age"
-names(df_re)[2] <- "use"
+f_test <- fisher.test(tbl, hybrid = TRUE)
+f_test
 
-aov <- aov(age ~ use, data = df_re)
-summary(aov)
-
-#multiple pairwise-comparison
-tukey <- TukeyHSD(aov) #with 95% conf.level
-tukey
-plot(tukey)
-
-#check for normality
-plot(aov, 2)
-
-#print the model tables from the anova
-print(model.tables(aov,"means"),digits=3)
-
-#get residuals
-stdres(aov)
+cramer_value <- CramerV(tbl) #used for bigger than 2x2 tables
+cramer_value
 
 #Tumblr
 tu <- as.data.frame(data$SM_USE_TU, stringsAsFactors = FALSE) #force to character type
@@ -415,27 +328,11 @@ tbl
 c_test <- chisq.test(tbl)
 c_test
 
-df_tu <- cbind.data.frame(age_num=unlist(age_num), tu) #age numeric
-rownames(df_tu) <- NULL
-names(df_tu)[1] <- "age"
-names(df_tu)[2] <- "use"
+f_test <- fisher.test(tbl, hybrid = TRUE)
+f_test
 
-aov <- aov(age ~ use, data = df_tu)
-summary(aov)
-
-#multiple pairwise-comparison
-tukey <- TukeyHSD(aov) #with 95% conf.level
-tukey
-plot(tukey)
-
-#check for normality
-plot(aov, 2)
-
-#print the model tables from the anova
-print(model.tables(aov,"means"),digits=3)
-
-#get residuals
-stdres(aov)
+cramer_value <- CramerV(tbl) #used for bigger than 2x2 tables
+cramer_value
 
 #Flickr
 fl <- as.data.frame(data$SM_USE_FL, stringsAsFactors = FALSE) #force to character type
@@ -447,27 +344,11 @@ tbl
 c_test <- chisq.test(tbl)
 c_test
 
-df_fl <- cbind.data.frame(age_num=unlist(age_num), fl) #age numeric
-rownames(df_fl) <- NULL
-names(df_fl)[1] <- "age"
-names(df_fl)[2] <- "use"
+f_test <- fisher.test(tbl, hybrid = TRUE)
+f_test
 
-aov <- aov(age ~ use, data = df_fl)
-summary(aov)
-
-#multiple pairwise-comparison
-tukey <- TukeyHSD(aov) #with 95% conf.level
-tukey
-plot(tukey)
-
-#check for normality
-plot(aov, 2)
-
-#print the model tables from the anova
-print(model.tables(aov,"means"),digits=3)
-
-#get residuals
-stdres(aov)
+cramer_value <- CramerV(tbl) #used for bigger than 2x2 tables
+cramer_value
 
 #Google+
 go <- as.data.frame(data$SM_USE_GO, stringsAsFactors = FALSE) #force to character type
@@ -479,27 +360,11 @@ tbl
 c_test <- chisq.test(tbl)
 c_test
 
-df_go <- cbind.data.frame(age_num=unlist(age_num), go) #age numeric
-rownames(df_go) <- NULL
-names(df_go)[1] <- "age"
-names(df_go)[2] <- "use"
+f_test <- fisher.test(tbl, hybrid = TRUE)
+f_test
 
-aov <- aov(age ~ use, data = df_go)
-summary(aov)
-
-#multiple pairwise-comparison
-tukey <- TukeyHSD(aov) #with 95% conf.level
-tukey
-plot(tukey)
-
-#check for normality
-plot(aov, 2)
-
-#print the model tables from the anova
-print(model.tables(aov,"means"),digits=3)
-
-#get residuals
-stdres(aov)
+cramer_value <- CramerV(tbl) #used for bigger than 2x2 tables
+cramer_value
 
 #Snapchat
 sc <- as.data.frame(data$SM_USE_SC, stringsAsFactors = FALSE) #force to character type
@@ -511,27 +376,11 @@ tbl
 c_test <- chisq.test(tbl)
 c_test
 
-df_sc <- cbind.data.frame(age_num=unlist(age_num), sc) #age numeric
-rownames(df_sc) <- NULL
-names(df_sc)[1] <- "age"
-names(df_sc)[2] <- "use"
+f_test <- fisher.test(tbl, hybrid = TRUE)
+f_test
 
-aov <- aov(age ~ use, data = df_sc)
-summary(aov)
-
-#multiple pairwise-comparison
-tukey <- TukeyHSD(aov) #with 95% conf.level
-tukey
-plot(tukey)
-
-#check for normality
-plot(aov, 2)
-
-#print the model tables from the anova
-print(model.tables(aov,"means"),digits=3)
-
-#get residuals
-stdres(aov)
+cramer_value <- CramerV(tbl) #used for bigger than 2x2 tables
+cramer_value
 
 #WhatsApp
 wa <- as.data.frame(data$SM_USE_WA, stringsAsFactors = FALSE) #force to character type
@@ -543,27 +392,11 @@ tbl
 c_test <- chisq.test(tbl)
 c_test
 
-df_wa <- cbind.data.frame(age_num=unlist(age_num), wa) #age numeric
-rownames(df_wa) <- NULL
-names(df_wa)[1] <- "age"
-names(df_wa)[2] <- "use"
+f_test <- fisher.test(tbl, hybrid = TRUE)
+f_test
 
-aov <- aov(age ~ use, data = df_wa)
-summary(aov)
-
-#multiple pairwise-comparison
-tukey <- TukeyHSD(aov) #with 95% conf.level
-tukey
-plot(tukey)
-
-#check for normality
-plot(aov, 2)
-
-#print the model tables from the anova
-print(model.tables(aov,"means"),digits=3)
-
-#get residuals
-stdres(aov)
+cramer_value <- CramerV(tbl) #used for bigger than 2x2 tables
+cramer_value
 
 #WeChat
 wc <- as.data.frame(data$SM_USE_WC, stringsAsFactors = FALSE) #force to character type
@@ -575,27 +408,11 @@ tbl
 c_test <- chisq.test(tbl)
 c_test
 
-df_wc <- cbind.data.frame(age_num=unlist(age_num), wc) #age numeric
-rownames(df_wc) <- NULL
-names(df_wc)[1] <- "age"
-names(df_wc)[2] <- "use"
+f_test <- fisher.test(tbl, hybrid = TRUE)
+f_test
 
-aov <- aov(age ~ use, data = df_wc)
-summary(aov)
-
-#multiple pairwise-comparison
-tukey <- TukeyHSD(aov) #with 95% conf.level
-tukey
-plot(tukey)
-
-#check for normality
-plot(aov, 2)
-
-#print the model tables from the anova
-print(model.tables(aov,"means"),digits=3)
-
-#get residuals
-stdres(aov)
+cramer_value <- CramerV(tbl) #used for bigger than 2x2 tables
+cramer_value
 
 #LINE
 # No one chose this response
@@ -610,27 +427,11 @@ tbl
 c_test <- chisq.test(tbl)
 c_test
 
-df_vb <- cbind.data.frame(age_num=unlist(age_num), vb) #age numeric
-rownames(df_vb) <- NULL
-names(df_vb)[1] <- "age"
-names(df_vb)[2] <- "use"
+f_test <- fisher.test(tbl, hybrid = TRUE)
+f_test
 
-aov <- aov(age ~ use, data = df_vb)
-summary(aov)
-
-#multiple pairwise-comparison
-tukey <- TukeyHSD(aov) #with 95% conf.level
-tukey
-plot(tukey)
-
-#check for normality
-plot(aov, 2)
-
-#print the model tables from the anova
-print(model.tables(aov,"means"),digits=3)
-
-#get residuals
-stdres(aov)
+cramer_value <- CramerV(tbl) #used for bigger than 2x2 tables
+cramer_value
 
 #7 Which devices do you use to check social media? Please check all that apply.----
 #PC
@@ -643,27 +444,11 @@ tbl
 c_test <- chisq.test(tbl)
 c_test
 
-df_pc <- cbind.data.frame(age_num=unlist(age_num), pc) #age numeric
-rownames(df_pc) <- NULL
-names(df_pc)[1] <- "age"
-names(df_pc)[2] <- "use"
+f_test <- fisher.test(tbl, hybrid = TRUE)
+f_test
 
-aov <- aov(age ~ use, data = df_pc)
-summary(aov)
-
-#multiple pairwise-comparison
-tukey <- TukeyHSD(aov) #with 95% conf.level
-tukey
-plot(tukey)
-
-#check for normality
-plot(aov, 2)
-
-#print the model tables from the anova
-print(model.tables(aov,"means"),digits=3)
-
-#get residuals
-stdres(aov)
+cramer_value <- CramerV(tbl) #used for bigger than 2x2 tables
+cramer_value
 
 #Phone
 ph <- as.data.frame(data$DEVICE_PHONE, stringsAsFactors = FALSE) #force to character type
@@ -675,27 +460,11 @@ tbl
 c_test <- chisq.test(tbl)
 c_test
 
-df_ph <- cbind.data.frame(age_num=unlist(age_num), ph) #age numeric
-rownames(df_ph) <- NULL
-names(df_ph)[1] <- "age"
-names(df_ph)[2] <- "use"
+f_test <- fisher.test(tbl, hybrid = TRUE)
+f_test
 
-aov <- aov(age ~ use, data = df_ph)
-summary(aov)
-
-#multiple pairwise-comparison
-tukey <- TukeyHSD(aov) #with 95% conf.level
-tukey
-plot(tukey)
-
-#check for normality
-plot(aov, 2)
-
-#print the model tables from the anova
-print(model.tables(aov,"means"),digits=3)
-
-#get residuals
-stdres(aov)
+cramer_value <- CramerV(tbl) #used for bigger than 2x2 tables
+cramer_value
 
 #Tablet
 ta <- as.data.frame(data$DEVICE_TABLET, stringsAsFactors = FALSE) #force to character type
@@ -707,27 +476,11 @@ tbl
 c_test <- chisq.test(tbl)
 c_test
 
-df_ta <- cbind.data.frame(age_num=unlist(age_num), ta) #age numeric
-rownames(df_ta) <- NULL
-names(df_ta)[1] <- "age"
-names(df_ta)[2] <- "use"
+f_test <- fisher.test(tbl, hybrid = TRUE)
+f_test
 
-aov <- aov(age ~ use, data = df_ta)
-summary(aov)
-
-#multiple pairwise-comparison
-tukey <- TukeyHSD(aov) #with 95% conf.level
-tukey
-plot(tukey)
-
-#check for normality
-plot(aov, 2)
-
-#print the model tables from the anova
-print(model.tables(aov,"means"),digits=3)
-
-#get residuals
-stdres(aov)
+cramer_value <- CramerV(tbl) #used for bigger than 2x2 tables
+cramer_value
 
 #Other had one "other" response and it was 'None', so analysis not performed
 
@@ -742,27 +495,11 @@ tbl
 c_test <- chisq.test(tbl)
 c_test
 
-df_hm <- cbind.data.frame(age_num=unlist(age_num), hm) #age numeric
-rownames(df_hm) <- NULL
-names(df_hm)[1] <- "age"
-names(df_hm)[2] <- "use"
+f_test <- fisher.test(tbl, hybrid = TRUE)
+f_test
 
-aov <- aov(age ~ use, data = df_hm)
-summary(aov)
-
-#multiple pairwise-comparison
-tukey <- TukeyHSD(aov) #with 95% conf.level
-tukey
-plot(tukey)
-
-#check for normality
-plot(aov, 2)
-
-#print the model tables from the anova
-print(model.tables(aov,"means"),digits=3)
-
-#get residuals
-stdres(aov)
+cramer_value <- CramerV(tbl) #used for bigger than 2x2 tables
+cramer_value
 
 #Work
 wk <- as.data.frame(data$ACCESS_WORK, stringsAsFactors = FALSE) #force to character type
@@ -774,27 +511,11 @@ tbl
 c_test <- chisq.test(tbl)
 c_test
 
-df_wk <- cbind.data.frame(age_num=unlist(age_num), wk) #age numeric
-rownames(df_wk) <- NULL
-names(df_wk)[1] <- "age"
-names(df_wk)[2] <- "use"
+f_test <- fisher.test(tbl, hybrid = TRUE)
+f_test
 
-aov <- aov(age ~ use, data = df_wk)
-summary(aov)
-
-#multiple pairwise-comparison
-tukey <- TukeyHSD(aov) #with 95% conf.level
-tukey
-plot(tukey)
-
-#check for normality
-plot(aov, 2)
-
-#print the model tables from the anova
-print(model.tables(aov,"means"),digits=3)
-
-#get residuals
-stdres(aov)
+cramer_value <- CramerV(tbl) #used for bigger than 2x2 tables
+cramer_value
 
 #School
 sl <- as.data.frame(data$ACCESS_SCHOOL, stringsAsFactors = FALSE) #force to character type
@@ -806,27 +527,11 @@ tbl
 c_test <- chisq.test(tbl)
 c_test
 
-df_sl <- cbind.data.frame(age_num=unlist(age_num), sl) #age numeric
-rownames(df_sl) <- NULL
-names(df_sl)[1] <- "age"
-names(df_sl)[2] <- "use"
+f_test <- fisher.test(tbl, hybrid = TRUE)
+f_test
 
-aov <- aov(age ~ use, data = df_sl)
-summary(aov)
-
-#multiple pairwise-comparison
-tukey <- TukeyHSD(aov) #with 95% conf.level
-tukey
-plot(tukey)
-
-#check for normality
-plot(aov, 2)
-
-#print the model tables from the anova
-print(model.tables(aov,"means"),digits=3)
-
-#get residuals
-stdres(aov)
+cramer_value <- CramerV(tbl) #used for bigger than 2x2 tables
+cramer_value
 
 #Other public location
 ot <- as.data.frame(data$ACCESS_OTHER, stringsAsFactors = FALSE) #force to character type
@@ -838,27 +543,11 @@ tbl
 c_test <- chisq.test(tbl)
 c_test
 
-df_ot <- cbind.data.frame(age_num=unlist(age_num), ot) #age numeric
-rownames(df_ot) <- NULL
-names(df_ot)[1] <- "age"
-names(df_ot)[2] <- "use"
+f_test <- fisher.test(tbl, hybrid = TRUE)
+f_test
 
-aov <- aov(age ~ use, data = df_ot)
-summary(aov)
-
-#multiple pairwise-comparison
-tukey <- TukeyHSD(aov) #with 95% conf.level
-tukey
-plot(tukey)
-
-#check for normality
-plot(aov, 2)
-
-#print the model tables from the anova
-print(model.tables(aov,"means"),digits=3)
-
-#get residuals
-stdres(aov)
+cramer_value <- CramerV(tbl) #used for bigger than 2x2 tables
+cramer_value
 
 #9 Aside from Facebook, what other social media do you use to seek agriculture information? Please check all that apply.----
 #Instagram
@@ -869,30 +558,14 @@ ig <- ig$use %>%
   replace_na("Not Used")
 tbl <- table(data$AGE, ig)
 tbl
-c_test <- chisq.test(tbl)
+c_test <- chisq.test(tbl, correct = FALSE)
 c_test
 
-df_ig <- cbind.data.frame(age_num=unlist(age_num), ig) #age numeric
-rownames(df_ig) <- NULL
-names(df_ig)[1] <- "age"
-names(df_ig)[2] <- "use"
+f_test <- fisher.test(tbl, hybrid = TRUE)
+f_test
 
-aov <- aov(age ~ use, data = df_ig)
-summary(aov)
-
-#multiple pairwise-comparison
-tukey <- TukeyHSD(aov) #with 95% conf.level
-tukey
-plot(tukey)
-
-#check for normality
-plot(aov, 2)
-
-#print the model tables from the anova
-print(model.tables(aov,"means"),digits=3)
-
-#get residuals
-stdres(aov)
+cramer_value <- CramerV(tbl) #used for bigger than 2x2 tables
+cramer_value
 
 #Pinterest
 pi <- as.data.frame(data$AG_USE_PI, stringsAsFactors = FALSE) #force to character type
@@ -901,30 +574,14 @@ pi <- pi$use %>%
   replace_na("Not Used")
 tbl <- table(data$AGE, pi)
 tbl
-c_test <- chisq.test(tbl)
+c_test <- chisq.test(tbl, correct = FALSE)
 c_test
 
-df_pi <- cbind.data.frame(age_num=unlist(age_num), pi) #age numeric
-rownames(df_pi) <- NULL
-names(df_pi)[1] <- "age"
-names(df_pi)[2] <- "use"
+f_test <- fisher.test(tbl, hybrid = TRUE)
+f_test
 
-aov <- aov(age ~ use, data = df_pi)
-summary(aov)
-
-#multiple pairwise-comparison
-tukey <- TukeyHSD(aov) #with 95% conf.level
-tukey
-plot(tukey)
-
-#check for normality
-plot(aov, 2)
-
-#print the model tables from the anova
-print(model.tables(aov,"means"),digits=3)
-
-#get residuals
-stdres(aov)
+cramer_value <- CramerV(tbl) #used for bigger than 2x2 tables
+cramer_value
 
 #LinkedIn
 lk <- as.data.frame(data$AG_USE_LK, stringsAsFactors = FALSE) #force to character type
@@ -933,30 +590,15 @@ lk <- lk$use %>%
   replace_na("Not Used")
 tbl <- table(data$AGE, lk)
 tbl
-c_test <- chisq.test(tbl)
+
+c_test <- chisq.test(tbl, correct = FALSE)
 c_test
 
-df_lk <- cbind.data.frame(age_num=unlist(age_num), lk) #age numeric
-rownames(df_lk) <- NULL
-names(df_lk)[1] <- "age"
-names(df_lk)[2] <- "use"
+f_test <- fisher.test(tbl, hybrid = TRUE)
+f_test
 
-aov <- aov(age ~ use, data = df_lk)
-summary(aov)
-
-#multiple pairwise-comparison
-tukey <- TukeyHSD(aov) #with 95% conf.level
-tukey
-plot(tukey)
-
-#check for normality
-plot(aov, 2)
-
-#print the model tables from the anova
-print(model.tables(aov,"means"),digits=3)
-
-#get residuals
-stdres(aov)
+cramer_value <- CramerV(tbl) #used for bigger than 2x2 tables
+cramer_value
 
 #Twitter
 tw <- as.data.frame(data$AG_USE_TW, stringsAsFactors = FALSE) #force to character type
@@ -965,30 +607,15 @@ tw <- tw$use %>%
   replace_na("Not Used")
 tbl <- table(data$AGE, tw)
 tbl
-c_test <- chisq.test(tbl)
+
+c_test <- chisq.test(tbl, correct = FALSE)
 c_test
 
-df_tw <- cbind.data.frame(age_num=unlist(age_num), tw) #age numeric
-rownames(df_tw) <- NULL
-names(df_tw)[1] <- "age"
-names(df_tw)[2] <- "use"
+f_test <- fisher.test(tbl, hybrid = TRUE)
+f_test
 
-aov <- aov(age ~ use, data = df_tw)
-summary(aov)
-
-#multiple pairwise-comparison
-tukey <- TukeyHSD(aov) #with 95% conf.level
-tukey
-plot(tukey)
-
-#check for normality
-plot(aov, 2)
-
-#print the model tables from the anova
-print(model.tables(aov,"means"),digits=3)
-
-#get residuals
-stdres(aov)
+cramer_value <- CramerV(tbl) #used for bigger than 2x2 tables
+cramer_value
 
 #YouTube
 yt <- as.data.frame(data$AG_USE_YT, stringsAsFactors = FALSE) #force to character type
@@ -997,30 +624,15 @@ yt <- yt$use %>%
   replace_na("Not Used")
 tbl <- table(data$AGE, yt)
 tbl
-c_test <- chisq.test(tbl)
+
+c_test <- chisq.test(tbl, correct = FALSE)
 c_test
 
-df_yt <- cbind.data.frame(age_num=unlist(age_num), yt) #age numeric
-rownames(df_yt) <- NULL
-names(df_yt)[1] <- "age"
-names(df_yt)[2] <- "use"
+f_test <- fisher.test(tbl, hybrid = TRUE)
+f_test
 
-aov <- aov(age ~ use, data = df_yt)
-summary(aov)
-
-#multiple pairwise-comparison
-tukey <- TukeyHSD(aov) #with 95% conf.level
-tukey
-plot(tukey)
-
-#check for normality
-plot(aov, 2)
-
-#print the model tables from the anova
-print(model.tables(aov,"means"),digits=3)
-
-#get residuals
-stdres(aov)
+cramer_value <- CramerV(tbl) #used for bigger than 2x2 tables
+cramer_value
 
 #Reddit
 re <- as.data.frame(data$AG_USE_RE, stringsAsFactors = FALSE) #force to character type
@@ -1029,30 +641,15 @@ re <- re$use %>%
   replace_na("Not Used")
 tbl <- table(data$AGE, re)
 tbl
-c_test <- chisq.test(tbl)
+
+c_test <- chisq.test(tbl, correct = FALSE)
 c_test
 
-df_re <- cbind.data.frame(age_num=unlist(age_num), re) #age numeric
-rownames(df_re) <- NULL
-names(df_re)[1] <- "age"
-names(df_re)[2] <- "use"
+f_test <- fisher.test(tbl, hybrid = TRUE)
+f_test
 
-aov <- aov(age ~ use, data = df_re)
-summary(aov)
-
-#multiple pairwise-comparison
-tukey <- TukeyHSD(aov) #with 95% conf.level
-tukey
-plot(tukey)
-
-#check for normality
-plot(aov, 2)
-
-#print the model tables from the anova
-print(model.tables(aov,"means"),digits=3)
-
-#get residuals
-stdres(aov)
+cramer_value <- CramerV(tbl) #used for bigger than 2x2 tables
+cramer_value
 
 #Tumblr
 tu <- as.data.frame(data$AG_USE_TU, stringsAsFactors = FALSE) #force to character type
@@ -1061,30 +658,15 @@ tu <- tu$use %>%
   replace_na("Not Used")
 tbl <- table(data$AGE, tu)
 tbl
-c_test <- chisq.test(tbl)
+
+c_test <- chisq.test(tbl, correct = FALSE)
 c_test
 
-df_tu <- cbind.data.frame(age_num=unlist(age_num), tu) #age numeric
-rownames(df_tu) <- NULL
-names(df_tu)[1] <- "age"
-names(df_tu)[2] <- "use"
+f_test <- fisher.test(tbl, hybrid = TRUE)
+f_test
 
-aov <- aov(age ~ use, data = df_tu)
-summary(aov)
-
-#multiple pairwise-comparison
-tukey <- TukeyHSD(aov) #with 95% conf.level
-tukey
-plot(tukey)
-
-#check for normality
-plot(aov, 2)
-
-#print the model tables from the anova
-print(model.tables(aov,"means"),digits=3)
-
-#get residuals
-stdres(aov)
+cramer_value <- CramerV(tbl) #used for bigger than 2x2 tables
+cramer_value
 
 #Flickr
 fl <- as.data.frame(data$AG_USE_FL, stringsAsFactors = FALSE) #force to character type
@@ -1093,30 +675,15 @@ fl <- fl$use %>%
   replace_na("Not Used")
 tbl <- table(data$AGE, fl)
 tbl
-c_test <- chisq.test(tbl)
+
+c_test <- chisq.test(tbl, correct = FALSE)
 c_test
 
-df_fl <- cbind.data.frame(age_num=unlist(age_num), fl) #age numeric
-rownames(df_fl) <- NULL
-names(df_fl)[1] <- "age"
-names(df_fl)[2] <- "use"
+f_test <- fisher.test(tbl, hybrid = TRUE)
+f_test
 
-aov <- aov(age ~ use, data = df_fl)
-summary(aov)
-
-#multiple pairwise-comparison
-tukey <- TukeyHSD(aov) #with 95% conf.level
-tukey
-plot(tukey)
-
-#check for normality
-plot(aov, 2)
-
-#print the model tables from the anova
-print(model.tables(aov,"means"),digits=3)
-
-#get residuals
-stdres(aov)
+cramer_value <- CramerV(tbl) #used for bigger than 2x2 tables
+cramer_value
 
 #Google+
 go <- as.data.frame(data$AG_USE_GO, stringsAsFactors = FALSE) #force to character type
@@ -1125,30 +692,15 @@ go <- go$use %>%
   replace_na("Not Used")
 tbl <- table(data$AGE, go)
 tbl
-c_test <- chisq.test(tbl)
+
+c_test <- chisq.test(tbl, correct = FALSE)
 c_test
 
-df_go <- cbind.data.frame(age_num=unlist(age_num), go) #age numeric
-rownames(df_go) <- NULL
-names(df_go)[1] <- "age"
-names(df_go)[2] <- "use"
+f_test <- fisher.test(tbl, hybrid = TRUE)
+f_test
 
-aov <- aov(age ~ use, data = df_go)
-summary(aov)
-
-#multiple pairwise-comparison
-tukey <- TukeyHSD(aov) #with 95% conf.level
-tukey
-plot(tukey)
-
-#check for normality
-plot(aov, 2)
-
-#print the model tables from the anova
-print(model.tables(aov,"means"),digits=3)
-
-#get residuals
-stdres(aov)
+cramer_value <- CramerV(tbl) #used for bigger than 2x2 tables
+cramer_value
 
 #Snapchat
 sc <- as.data.frame(data$AG_USE_SC, stringsAsFactors = FALSE) #force to character type
@@ -1157,30 +709,15 @@ sc <- sc$use %>%
   replace_na("Not Used")
 tbl <- table(data$AGE, sc)
 tbl
-c_test <- chisq.test(tbl)
+
+c_test <- chisq.test(tbl, correct = FALSE)
 c_test
 
-df_sc <- cbind.data.frame(age_num=unlist(age_num), sc) #age numeric
-rownames(df_sc) <- NULL
-names(df_sc)[1] <- "age"
-names(df_sc)[2] <- "use"
+f_test <- fisher.test(tbl, hybrid = TRUE)
+f_test
 
-aov <- aov(age ~ use, data = df_sc)
-summary(aov)
-
-#multiple pairwise-comparison
-tukey <- TukeyHSD(aov) #with 95% conf.level
-tukey
-plot(tukey)
-
-#check for normality
-plot(aov, 2)
-
-#print the model tables from the anova
-print(model.tables(aov,"means"),digits=3)
-
-#get residuals
-stdres(aov)
+cramer_value <- CramerV(tbl) #used for bigger than 2x2 tables
+cramer_value
 
 #WhatsApp
 wa <- as.data.frame(data$AG_USE_WA, stringsAsFactors = FALSE) #force to character type
@@ -1189,30 +726,15 @@ wa <- wa$use %>%
   replace_na("Not Used")
 tbl <- table(data$AGE, wa)
 tbl
-c_test <- chisq.test(tbl)
+
+c_test <- chisq.test(tbl, correct = FALSE)
 c_test
 
-df_wa <- cbind.data.frame(age_num=unlist(age_num), wa) #age numeric
-rownames(df_wa) <- NULL
-names(df_wa)[1] <- "age"
-names(df_wa)[2] <- "use"
+f_test <- fisher.test(tbl, hybrid = TRUE)
+f_test
 
-aov <- aov(age ~ use, data = df_wa)
-summary(aov)
-
-#multiple pairwise-comparison
-tukey <- TukeyHSD(aov) #with 95% conf.level
-tukey
-plot(tukey)
-
-#check for normality
-plot(aov, 2)
-
-#print the model tables from the anova
-print(model.tables(aov,"means"),digits=3)
-
-#get residuals
-stdres(aov)
+cramer_value <- CramerV(tbl) #used for bigger than 2x2 tables
+cramer_value
 
 #WeChat
 # No one chose this response
@@ -1228,30 +750,14 @@ stdres(aov)
 tbl <- table(data$AGE, data$AG_QS_FB)
 tbl
 
-chi_test <- chisq.test(tbl)
-chi_test
+c_test <- chisq.test(tbl, correct = FALSE)
+c_test
 
-df <- cbind.data.frame(age_num=unlist(age_num), data$AG_QS_FB) #age numeric
-rownames(df) <- NULL
-names(df)[1] <- "age"
-names(df)[2] <- "question"
+f_test <- fisher.test(tbl, hybrid = TRUE)
+f_test
 
-aov <- aov(age ~ question, data = df)
-summary(aov)
-
-#multiple pairwise-comparison
-tukey <- TukeyHSD(aov) #with 95% conf.level
-tukey
-plot(tukey)
-
-#check for normality
-plot(aov, 2)
-
-#print the model tables from the anova
-print(model.tables(aov,"means"),digits=3)
-
-#get residuals
-stdres(aov)
+cramer_value <- CramerV(tbl) #used for bigger than 2x2 tables
+cramer_value
 
 #11 If yes, where do you post questions about agriculture on Facebook?----
 ag_yes <- data[which(data$AG_QS_FB=="Yes, I post questions about agriculture on Facebook."),]
@@ -1262,160 +768,56 @@ ag_yes$AG_QS_STATUS <- ag_yes$AG_QS_STATUS %>%
   replace_na("Not Used")
 tbl <- table(ag_yes$AGE, ag_yes$AG_QS_STATUS)
 tbl
-chi_test <- chisq.test(tbl)
-chi_test
+c_test <- chisq.test(tbl, correct = FALSE)
+c_test
 
-df <- cbind.data.frame(ag_yes$AGE,ag_yes$AG_QS_STATUS) #age numeric
-df$age <- as.character(df$age) #needed for some reason ?
-rownames(df) <- NULL
-names(df)[1] <- "age"
-names(df)[2] <- "post"
+f_test <- fisher.test(tbl, hybrid = TRUE)
+f_test
 
-df$age[df$age == "18-21"] <- 19.5
-df$age[df$age == "22-25"] <- 23.5
-df$age[df$age == "26-30"] <- 28
-df$age[df$age == "31-40"] <- 35.5
-df$age[df$age == "41-50"] <- 45.5
-df$age[df$age == "51-60"] <- 55.5
-df$age[df$age == "61 or over"] <- 61
-df$age <- as.numeric(df$age) #convert to numeric values
-
-aov <- aov(age ~ post, data = df)
-summary(aov)
-
-#multiple pairwise-comparison
-tukey <- TukeyHSD(aov) #with 95% conf.level
-tukey
-plot(tukey)
-
-#check for normality
-plot(aov, 2)
-
-#print the model tables from the anova
-print(model.tables(aov,"means"),digits=3)
-
-#get residuals
-stdres(aov)
+cramer_value <- CramerV(tbl) #used for bigger than 2x2 tables
+cramer_value
 
 #In a group
 ag_yes$AG_QS_GROUP <- ag_yes$AG_QS_GROUP %>%
   replace_na("Not Used")
 tbl <- table(ag_yes$AGE, ag_yes$AG_QS_GROUP)
 tbl
-chi_test <- chisq.test(tbl)
-chi_test
+c_test <- chisq.test(tbl, correct = FALSE)
+c_test
 
-df <- cbind.data.frame(ag_yes$AGE,ag_yes$AG_QS_GROUP) #age numeric
-rownames(df) <- NULL
-names(df)[1] <- "age"
-names(df)[2] <- "post"
-df$age <- as.character(df$age) #needed after renaming
+f_test <- fisher.test(tbl, hybrid = TRUE)
+f_test
 
-df$age[df$age == "18-21"] <- 19.5
-df$age[df$age == "22-25"] <- 23.5
-df$age[df$age == "26-30"] <- 28
-df$age[df$age == "31-40"] <- 35.5
-df$age[df$age == "41-50"] <- 45.5
-df$age[df$age == "51-60"] <- 55.5
-df$age[df$age == "61 or over"] <- 61
-df$age <- as.numeric(df$age) #convert to numeric values
-
-aov <- aov(age ~ post, data = df)
-summary(aov)
-
-#multiple pairwise-comparison
-tukey <- TukeyHSD(aov) #with 95% conf.level
-tukey
-plot(tukey)
-
-#check for normality
-plot(aov, 2)
-
-#print the model tables from the anova
-print(model.tables(aov,"means"),digits=3)
-
-#get residuals
-stdres(aov)
+cramer_value <- CramerV(tbl) #used for bigger than 2x2 tables
+cramer_value
 
 #On a page
 ag_yes$AG_QS_PAGE <- ag_yes$AG_QS_PAGE %>%
   replace_na("Not Used")
 tbl <- table(ag_yes$AGE, ag_yes$AG_QS_PAGE)
 tbl
-chi_test <- chisq.test(tbl)
-chi_test
+c_test <- chisq.test(tbl, correct = FALSE)
+c_test
 
-df <- cbind.data.frame(ag_yes$AGE,ag_yes$AG_QS_PAGE) #age numeric
-rownames(df) <- NULL
-names(df)[1] <- "age"
-names(df)[2] <- "post"
-df$age <- as.character(df$age) #needed after renaming
+f_test <- fisher.test(tbl, hybrid = TRUE)
+f_test
 
-df$age[df$age == "18-21"] <- 19.5
-df$age[df$age == "22-25"] <- 23.5
-df$age[df$age == "26-30"] <- 28
-df$age[df$age == "31-40"] <- 35.5
-df$age[df$age == "41-50"] <- 45.5
-df$age[df$age == "51-60"] <- 55.5
-df$age[df$age == "61 or over"] <- 61
-df$age <- as.numeric(df$age) #convert to numeric values
-
-aov <- aov(age ~ post, data = df)
-summary(aov)
-
-#multiple pairwise-comparison
-tukey <- TukeyHSD(aov) #with 95% conf.level
-tukey
-plot(tukey)
-
-#check for normality
-plot(aov, 2)
-
-#print the model tables from the anova
-print(model.tables(aov,"means"),digits=3)
-
-#get residuals
-stdres(aov)
+cramer_value <- CramerV(tbl) #used for bigger than 2x2 tables
+cramer_value
 
 #Other
 ag_yes$AG_QS_OTHER <- ag_yes$AG_QS_OTHER %>%
   replace_na("Not Used")
 tbl <- table(ag_yes$AGE, ag_yes$AG_QS_OTHER)
 tbl
-chi_test <- chisq.test(tbl)
-chi_test
+c_test <- chisq.test(tbl, correct = FALSE)
+c_test
 
-df <- cbind.data.frame(ag_yes$AGE,ag_yes$AG_QS_OTHER) #age numeric
-rownames(df) <- NULL
-names(df)[1] <- "age"
-names(df)[2] <- "post"
-df$age <- as.character(df$age) #needed after renaming
+f_test <- fisher.test(tbl, hybrid = TRUE)
+f_test
 
-df$age[df$age == "18-21"] <- 19.5
-df$age[df$age == "22-25"] <- 23.5
-df$age[df$age == "26-30"] <- 28
-df$age[df$age == "31-40"] <- 35.5
-df$age[df$age == "41-50"] <- 45.5
-df$age[df$age == "51-60"] <- 55.5
-df$age[df$age == "61 or over"] <- 61
-df$age <- as.numeric(df$age) #convert to numeric values
-
-aov <- aov(age ~ post, data = df)
-summary(aov)
-
-#multiple pairwise-comparison
-tukey <- TukeyHSD(aov) #with 95% conf.level
-tukey
-plot(tukey)
-
-#check for normality
-plot(aov, 2)
-
-#print the model tables from the anova
-print(model.tables(aov,"means"),digits=3)
-
-#get residuals
-stdres(aov)
+cramer_value <- CramerV(tbl) #used for bigger than 2x2 tables
+cramer_value
 
 #12 The following are types of content you find on Facebook. How helpful are each of them in providing you with agriculture information?----
 
@@ -1428,38 +830,14 @@ data2[ ,63:74][ data2[ ,63:74] == "Extremely helpful" ] <- 5
 data2[,63:74] <- sapply(data2[ ,63:74],as.numeric) #convert multiple columns to numeric type
 
 myData <- myData[-c(2, 4, 6), ] #drop a row, don't run, this is example code
-#Grab stadardized residuals to analyze
-stdres(aov)
 
 #Advertisements
 df <- cbind.data.frame(data2$AGE, data2$HELP_AD) #rating number
 names(df) <- c("age","ads_score")
 df <- na.omit(df)
 df <- df[-c(71), ] #droped outlier
-#Table
-tbl <- table(df$age, df$ads_score)
-tbl
 #ANOVA
 aov <- aov(ads_score ~ age, data = df)
-summary(aov)
-#multiple pairwise-comparison
-tukey <- TukeyHSD(aov) #with 95% conf.level
-tukey
-#check for normality
-plot(aov, 2)
-#print the model tables from the anova
-print(model.tables(aov,"means"),digits=3)
-#residuals
-stdres(aov)
-
-#Advertisements - age number, rating category
-df <- cbind.data.frame(age_num=unlist(age_num), data$HELP_AD) #age numeric
-rownames(df) <- NULL
-names(df)[1] <- "age"
-names(df)[2] <- "ads_category"
-df <- na.omit(df)
-#ANOVA
-aov <- aov(age ~ ads_category, data = df)
 summary(aov)
 #multiple pairwise-comparison
 tukey <- TukeyHSD(aov) #with 95% conf.level
@@ -1475,29 +853,9 @@ stdres(aov)
 df <- cbind.data.frame(data2$AGE, data2$HELP_AP)
 names(df) <- c("age","apps_score")
 df <- na.omit(df)
-#Table
-tbl <- table(df$age, df$apps_score)
-tbl
+df <- df[-c(53,14,65), ]
 #ANOVA
 aov <- aov(apps_score ~ age, data = df)
-summary(aov)
-#multiple pairwise-comparison
-tukey <- TukeyHSD(aov) #with 95% conf.level
-tukey
-#check for normality
-plot(aov, 2)
-#print the model tables from the anova
-print(model.tables(aov,"means"),digits=3)
-#residuals
-stdres(aov)
-
-df <- cbind.data.frame(age_num=unlist(age_num), data$HELP_AP) #age numeric
-rownames(df) <- NULL
-names(df)[1] <- "age"
-names(df)[2] <- "apps_score"
-df <- na.omit(df)
-#ANOVA
-aov <- aov(age ~ apps_score, data = df)
 summary(aov)
 #multiple pairwise-comparison
 tukey <- TukeyHSD(aov) #with 95% conf.level
@@ -1513,29 +871,9 @@ stdres(aov)
 df <- cbind.data.frame(data2$AGE, data2$HELP_AR)
 names(df) <- c("age","articles_score")
 df <- na.omit(df)
-#Table
-tbl <- table(df$age, df$articles_score)
-tbl
+df <- df[-c(72), ]
 #ANOVA
 aov <- aov(articles_score ~ age, data = df)
-summary(aov)
-#multiple pairwise-comparison
-tukey <- TukeyHSD(aov) #with 95% conf.level
-tukey
-#check for normality
-plot(aov, 2)
-#print the model tables from the anova
-print(model.tables(aov,"means"),digits=3)
-#residuals
-stdres(aov)
-
-df <- cbind.data.frame(age_num=unlist(age_num), data$HELP_AR) #age numeric
-rownames(df) <- NULL
-names(df)[1] <- "age"
-names(df)[2] <- "articles_score"
-df <- na.omit(df)
-#ANOVA
-aov <- aov(age ~ articles_score, data = df)
 summary(aov)
 #multiple pairwise-comparison
 tukey <- TukeyHSD(aov) #with 95% conf.level
@@ -1551,29 +889,8 @@ stdres(aov)
 df <- cbind.data.frame(data2$AGE, data2$HELP_EV)
 names(df) <- c("age","events_score")
 df <- na.omit(df)
-#Table
-tbl <- table(df$age, df$events_score)
-tbl
 #ANOVA
 aov <- aov(events_score ~ age, data = df)
-summary(aov)
-#multiple pairwise-comparison
-tukey <- TukeyHSD(aov) #with 95% conf.level
-tukey
-#check for normality
-plot(aov, 2)
-#print the model tables from the anova
-print(model.tables(aov,"means"),digits=3)
-#residuals
-stdres(aov)
-
-df <- cbind.data.frame(age_num=unlist(age_num), data$HELP_EV) #age numeric
-rownames(df) <- NULL
-names(df)[1] <- "age"
-names(df)[2] <- "events_score"
-df <- na.omit(df)
-#ANOVA
-aov <- aov(age ~ events_score, data = df)
 summary(aov)
 #multiple pairwise-comparison
 tukey <- TukeyHSD(aov) #with 95% conf.level
@@ -1589,29 +906,8 @@ stdres(aov)
 df <- cbind.data.frame(data2$AGE, data2$HELP_GR)
 names(df) <- c("age","groups_score")
 df <- na.omit(df)
-#Table
-tbl <- table(df$age, df$groups_score)
-tbl
 #ANOVA
 aov <- aov(groups_score ~ age, data = df)
-summary(aov)
-#multiple pairwise-comparison
-tukey <- TukeyHSD(aov) #with 95% conf.level
-tukey
-#check for normality
-plot(aov, 2)
-#print the model tables from the anova
-print(model.tables(aov,"means"),digits=3)
-#residuals
-stdres(aov)
-
-df <- cbind.data.frame(age_num=unlist(age_num), data$HELP_GR) #age numeric
-rownames(df) <- NULL
-names(df)[1] <- "age"
-names(df)[2] <- "groups_score"
-df <- na.omit(df)
-#ANOVA
-aov <- aov(age ~ groups_score, data = df)
 summary(aov)
 #multiple pairwise-comparison
 tukey <- TukeyHSD(aov) #with 95% conf.level
@@ -1628,29 +924,8 @@ df <- cbind.data.frame(data2$AGE, data2$HELP_LI)
 names(df) <- c("age","links_score")
 df <- na.omit(df)
 df <- df[-c(74), ] #droped outlier
-#Table
-tbl <- table(df$age, df$links_score)
-tbl
 #ANOVA
 aov <- aov(links_score ~ age, data = df)
-summary(aov)
-#multiple pairwise-comparison
-tukey <- TukeyHSD(aov) #with 95% conf.level
-tukey
-#check for normality
-plot(aov, 2)
-#print the model tables from the anova
-print(model.tables(aov,"means"),digits=3)
-#residuals
-stdres(aov)
-
-df <- cbind.data.frame(age_num=unlist(age_num), data$HELP_LI) #age numeric
-rownames(df) <- NULL
-names(df)[1] <- "age"
-names(df)[2] <- "links_score"
-df <- na.omit(df)
-#ANOVA
-aov <- aov(age ~ links_score, data = df)
 summary(aov)
 #multiple pairwise-comparison
 tukey <- TukeyHSD(aov) #with 95% conf.level
@@ -1665,30 +940,9 @@ stdres(aov)
 #Pages
 df <- cbind.data.frame(data2$AGE, data2$HELP_PA)
 names(df) <- c("age","pages_score")
-df <- na.omit(df)
-#Table
-tbl <- table(df$age, df$pages_score)
-tbl
+df <- na.omit(df)l
 #ANOVA
 aov <- aov(pages_score ~ age, data = df)
-summary(aov)
-#multiple pairwise-comparison
-tukey <- TukeyHSD(aov) #with 95% conf.level
-tukey
-#check for normality
-plot(aov, 2)
-#print the model tables from the anova
-print(model.tables(aov,"means"),digits=3)
-#residuals
-stdres(aov)
-
-df <- cbind.data.frame(age_num=unlist(age_num), data$HELP_PA) #age numeric
-rownames(df) <- NULL
-names(df)[1] <- "age"
-names(df)[2] <- "pages_score"
-df <- na.omit(df)
-#ANOVA
-aov <- aov(age ~ pages_score, data = df)
 summary(aov)
 #multiple pairwise-comparison
 tukey <- TukeyHSD(aov) #with 95% conf.level
@@ -1704,29 +958,8 @@ stdres(aov)
 df <- cbind.data.frame(data2$AGE, data2$HELP_PH)
 names(df) <- c("age","photos_score")
 df <- na.omit(df)
-#Table
-tbl <- table(df$age, df$photos_score)
-tbl
 #ANOVA
 aov <- aov(photos_score ~ age, data = df)
-summary(aov)
-#multiple pairwise-comparison
-tukey <- TukeyHSD(aov) #with 95% conf.level
-tukey
-#check for normality
-plot(aov, 2)
-#print the model tables from the anova
-print(model.tables(aov,"means"),digits=3)
-#residuals
-stdres(aov)
-
-df <- cbind.data.frame(age_num=unlist(age_num), data$HELP_PH) #age numeric
-rownames(df) <- NULL
-names(df)[1] <- "age"
-names(df)[2] <- "photos_score"
-df <- na.omit(df)
-#ANOVA
-aov <- aov(age ~ photos_score, data = df)
 summary(aov)
 #multiple pairwise-comparison
 tukey <- TukeyHSD(aov) #with 95% conf.level
@@ -1742,29 +975,8 @@ stdres(aov)
 df <- cbind.data.frame(data2$AGE, data2$HELP_PL)
 names(df) <- c("age","places_score")
 df <- na.omit(df)
-#Table
-tbl <- table(df$age, df$places_score)
-tbl
 #ANOVA
 aov <- aov(places_score ~ age, data = df)
-summary(aov)
-#multiple pairwise-comparison
-tukey <- TukeyHSD(aov) #with 95% conf.level
-tukey
-#check for normality
-plot(aov, 2)
-#print the model tables from the anova
-print(model.tables(aov,"means"),digits=3)
-#residuals
-stdres(aov)
-
-df <- cbind.data.frame(age_num=unlist(age_num), data$HELP_PL) #age numeric
-rownames(df) <- NULL
-names(df)[1] <- "age"
-names(df)[2] <- "places_score"
-df <- na.omit(df)
-#ANOVA
-aov <- aov(age ~ places_score, data = df)
 summary(aov)
 #multiple pairwise-comparison
 tukey <- TukeyHSD(aov) #with 95% conf.level
@@ -1780,29 +992,8 @@ stdres(aov)
 df <- cbind.data.frame(data2$AGE, data2$HELP_RS)
 names(df) <- c("age","rs_score")
 df <- na.omit(df)
-#Table
-tbl <- table(df$age, df$rs_score)
-tbl
 #ANOVA
 aov <- aov(rs_score ~ age, data = df)
-summary(aov)
-#multiple pairwise-comparison
-tukey <- TukeyHSD(aov) #with 95% conf.level
-tukey
-#check for normality
-plot(aov, 2)
-#print the model tables from the anova
-print(model.tables(aov,"means"),digits=3)
-#residuals
-stdres(aov)
-
-df <- cbind.data.frame(age_num=unlist(age_num), data$HELP_RS) #age numeric
-rownames(df) <- NULL
-names(df)[1] <- "age"
-names(df)[2] <- "rs_score"
-df <- na.omit(df)
-#ANOVA
-aov <- aov(age ~ rs_score, data = df)
 summary(aov)
 #multiple pairwise-comparison
 tukey <- TukeyHSD(aov) #with 95% conf.level
@@ -1834,24 +1025,6 @@ print(model.tables(aov,"means"),digits=3)
 #residuals
 stdres(aov)
 
-df <- cbind.data.frame(age_num=unlist(age_num), data$HELP_SU) #age numeric
-rownames(df) <- NULL
-names(df)[1] <- "age"
-names(df)[2] <- "su_score"
-df <- na.omit(df)
-#ANOVA
-aov <- aov(age ~ su_score, data = df)
-summary(aov)
-#multiple pairwise-comparison
-tukey <- TukeyHSD(aov) #with 95% conf.level
-tukey
-#check for normality
-plot(aov, 2)
-#print the model tables from the anova
-print(model.tables(aov,"means"),digits=3)
-#residuals
-stdres(aov)
-
 #Videos
 df <- cbind.data.frame(data2$AGE, data2$HELP_VI)
 names(df) <- c("age","videos_score")
@@ -1861,24 +1034,6 @@ tbl <- table(df$age, df$videos_score)
 tbl
 #ANOVA
 aov <- aov(videos_score ~ age, data = df)
-summary(aov)
-#multiple pairwise-comparison
-tukey <- TukeyHSD(aov) #with 95% conf.level
-tukey
-#check for normality
-plot(aov, 2)
-#print the model tables from the anova
-print(model.tables(aov,"means"),digits=3)
-#residuals
-stdres(aov)
-
-df <- cbind.data.frame(age_num=unlist(age_num), data$HELP_VI) #age numeric
-rownames(df) <- NULL
-names(df)[1] <- "age"
-names(df)[2] <- "videos_score"
-df <- na.omit(df)
-#ANOVA
-aov <- aov(age ~ videos_score, data = df)
 summary(aov)
 #multiple pairwise-comparison
 tukey <- TukeyHSD(aov) #with 95% conf.level

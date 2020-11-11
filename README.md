@@ -11,7 +11,7 @@ Results will present associations from Chi-square tests between demographics and
 The coding language R was used for analysis. Data used was part of dissertation work on Facebook use in Illinois by farming communities at the University of Illinois at Urbana-Champaign. The dissertation can be found at this link [here](http://hdl.handle.net/2142/105640).
 
 ## Requirements
-This [file](.txt) has the version of R that I was running with all the associated packages and their versions listed.
+This [file](r_packages_loaded.txt) has the version of R that I was running with all the associated packages and their versions listed.
 
 ## Resources
 Here are some great resources that I used for select packages:  

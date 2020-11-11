@@ -58,14 +58,13 @@ aov <- aov(time ~ label, data = df_fb_long) #number X category (variable order)
 summary(aov)
 
 aov2 <- aov(label ~ use, data = df_fb_long2)
-summary(aov2)
+summary(aov2) #ended up not using mid-points of ages anywhere, for consistency with other questions
 
 #2 How often do you use Facebook?----
 
 #7x4 table - categorical
 tbl <- table(data$AGE, data$FB_OFTEN_USE)
 tbl
-
 
 #7x4 table - numerical
 fb_often_num <- as.data.frame(data$FB_OFTEN_USE, stringsAsFactors = FALSE)
@@ -109,7 +108,7 @@ stdres(aov2)
 #3 How long have you used social media (including Facebook)?----
 
 tbl <- table(data$AGE, data$SM_LONG_USE) 
-tbl #counts are really small and only 1 answer different than Q1 which was highly unsignificant, just gonna throw out this question, no analysis
+tbl #counts are really small and only 1 answer different than Q1 which was highly unsignificant, going to throw out this question
 
 #4 How often do you use other social media (not including Facebook)?----
 
@@ -745,7 +744,6 @@ cramer_value
 #Viber
 # No one chose this response
 
-
 #10 Do you post questions about agriculture on Facebook?----
 tbl <- table(data$AGE, data$AG_QS_FB)
 tbl
@@ -819,9 +817,9 @@ f_test
 cramer_value <- CramerV(tbl) #used for bigger than 2x2 tables
 cramer_value
 
-#12 The following are types of content you find on Facebook. How helpful are each of them in providing you with agriculture information?----
+#12 The following are types of content you find on Facebook. How helpful are each of them in providing you with agriculture information? Please rate each type of content on a five-point scale where 1 means not at all helpful and 5 means extremely helpful. Please select not applicable (N/A) if you have not used a particular content type.----
 
-data2 <- as.data.frame(data, stringsAsFactors=FALSE) #made a copy of the data to test
+data2 <- as.data.frame(data, stringsAsFactors=FALSE) #made a copy of the data
 data2[ ,63:74][ data2[ ,63:74] == "Not at all helpful" ] <- 1 #convert multiple columns to scores
 data2[ ,63:74][ data2[ ,63:74] == "Slightly helpful" ] <- 2
 data2[ ,63:74][ data2[ ,63:74] == "Moderately helpful" ] <- 3
